@@ -42,19 +42,6 @@ function AssembleCard({ mech }: { mech: AsmCardProps }) {
 }
 
 export default function AssembleBoard() {
-  const [mechData, setMechData] = useState<AssembleData>({
-    name: "Armored Steel Borne",
-    imageUrls: [
-      "https://example.com/image1.jpg",
-      "https://example.com/image2.jpg",
-      "https://example.com/image3.jpg",
-    ],
-
-    parts: ["Part 1", "Part 2", "Part 3"],
-    description: "This is a description of the mech.",
-    notes: "Some additional notes about the mech.",
-  });
-
   const mech = {
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
@@ -64,11 +51,17 @@ export default function AssembleBoard() {
   };
 
   return (
-    <Layout>
-      <div className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
-        <h1>AC Assemble</h1>
+    <div className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
+      <h1>AC Assemble</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <AssembleCard mech={mech} />
+        <AssembleCard mech={mech} />
+        <AssembleCard mech={mech} />
+        <AssembleCard mech={mech} />
+        <AssembleCard mech={mech} />
+        <AssembleCard mech={mech} />
         <AssembleCard mech={mech} />
       </div>
-    </Layout>
+    </div>
   );
 }
