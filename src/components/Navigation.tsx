@@ -14,6 +14,9 @@ function Navigation() {
         <li>
           <Link href="/register">Register</Link>
         </li>
+        <li>
+          <Link href="/assemble">Assemble</Link>
+        </li>
       </ul>
     </nav>
   );
