@@ -30,8 +30,8 @@ type AcAsm = {
 // }: MechDetailProps)
 
 const acAsm = {
-  pilotName: "John Doe",
-  acName: "Armored Steel Borne",
+  pilotName: "V.Ⅳ Rusty",
+  acName: "STEEL HAZE",
   emblemUrl: "/ac/rusty.jpg",
   acImages: ["/ac/ac.jpg", "/ac/ac2.jpg", "/ac/ac3.png"],
   partsList: ["Part 1", "Part 2", "Part 3"],
@@ -62,25 +62,15 @@ export default function AssembleDetail() {
 
 
   return (
-    <div className="min-h-full py-40 w-screen flex flex-col justify-center items-center gap-10">
-      <h1 className="text-2xl font-bold">{acAsm.acName}</h1>
-      <h2 className="text-xl">{acAsm.pilotName}</h2>
-      <img className="w-32 h-32" src={acAsm.emblemUrl} alt="Emblem" />
-
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {acAsm.acImages.map((image, index) => (
-          <img key={index} src={image} alt={`Mech ${index + 1}`} />
-        ))}
+    <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
+      <div className="flex border-4">
+        <img className="w-32 h-32" src={acAsm.emblemUrl} alt="Emblem" />
+        <div className="m-5 ">
+          <h1 className="text-2xl font-bold">AC: {acAsm.acName}</h1>
+          <h2 className="text-xl">PILOT: {acAsm.pilotName}</h2>
+        </div>
       </div>
-      <div>
-        <button onClick={handlePrevImage}>Prev</button>
-        <img
-          className="w-80 object-contain"
-          src={acAsm.acImages[currentImageIndex]}
-          alt={`Mech ${currentImageIndex + 1}`}
-        />
-        <button onClick={handleNextImage}>Next</button>
-      </div> */}
+      <ImageSwipe />
       <ul>
         {acAsm.partsList.map((part, index) => (
           <li key={index}>{part}</li>
@@ -89,44 +79,44 @@ export default function AssembleDetail() {
       <p>{acAsm.description}</p>
       <p>{acAsm.remarks}</p>
 
-      <ImageSwipe />
+
     </div>
   );
 }
 
 function ImageSwipe() {
-  return(
+  return (
     <Swiper
-    modules={[Navigation, Pagination, Autoplay]}
-    slidesPerView={"auto"} // ハイドレーションエラー対策
-    centeredSlides={true} // スライドを中央に配置
-    loop={true} // スライドをループさせる
-    speed={1000} // スライドが切り替わる時の速度
-    autoplay={{
-      delay: 8000,
-      disableOnInteraction: false,
-    }} // スライド表示時間
-    navigation // ナビゲーション（左右の矢印）
-    pagination={{
-      clickable: true,
-      type: "progressbar",
-    }} // ページネーション, クリックで対象のスライドに切り替わる
-    className="w-auto max-w-7xl h-fit min-h-80 mx-auto border-2"
-  >
-    {images.map((src: string, index: number) => (
-      <SwiperSlide key={index} className="border-4 border-gray-600">
-        <Image
-          src={src}
-          width={2000}
-          height={2000}
-          // このwidthとheight指定の数字に意味，理由はない
-          alt="Slider Image"
-          sizes=""
-          className="object-contain w-full"
-        />
-      </SwiperSlide>
-    ))}
-  </Swiper>
+      modules={[Navigation, Pagination, Autoplay]}
+      slidesPerView={"auto"} // ハイドレーションエラー対策
+      centeredSlides={true} // スライドを中央に配置
+      loop={true} // スライドをループさせる
+      speed={1000} // スライドが切り替わる時の速度
+      autoplay={{
+        delay: 8000,
+        disableOnInteraction: false,
+      }} // スライド表示時間
+      navigation // ナビゲーション（左右の矢印）
+      pagination={{
+        clickable: true,
+        type: "progressbar",
+      }} // ページネーション, クリックで対象のスライドに切り替わる
+      className="w-auto max-w-7xl h-fit min-h-80 mx-auto border-2"
+    >
+      {images.map((src: string, index: number) => (
+        <SwiperSlide key={index} className="border-4 border-gray-600">
+          <Image
+            src={src}
+            width={2000}
+            height={2000}
+            // このwidthとheight指定の数字に意味，理由はない
+            alt="Slider Image"
+            sizes=""
+            className="object-contain w-full"
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   )
 }
 
