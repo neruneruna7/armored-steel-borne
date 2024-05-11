@@ -17,6 +17,9 @@ function Navigation() {
         <li>
           <Link href="/assemble">Assemble</Link>
         </li>
+        <li>
+          <Link href="/debug">Debug</Link>
+        </li>
       </ul>
     </nav>
   );
