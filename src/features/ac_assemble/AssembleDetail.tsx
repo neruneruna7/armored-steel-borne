@@ -1,4 +1,13 @@
 import { useState } from "react";
+import Image from "next/image";
+
+// オプションをインポートする
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import styles from "./index.module.css";
 
 type AcAsm = {
   pilotName: string;
@@ -30,8 +39,13 @@ const acAsm = {
   remarks: "These are remarks",
 };
 
-export default function AssembleDetail() {
+const images = [
+  "/ac/ac.jpg",
+  "/ac/ac2.jpg",
+  "/ac/ac3.png",
+];
 
+export default function AssembleDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handlePrevImage = () => {
@@ -46,13 +60,14 @@ export default function AssembleDetail() {
     );
   };
 
+
   return (
-    <div className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
+    <div className="min-h-full py-40 w-screen flex flex-col justify-center items-center gap-10">
       <h1 className="text-2xl font-bold">{acAsm.acName}</h1>
       <h2 className="text-xl">{acAsm.pilotName}</h2>
       <img className="w-32 h-32" src={acAsm.emblemUrl} alt="Emblem" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {acAsm.acImages.map((image, index) => (
           <img key={index} src={image} alt={`Mech ${index + 1}`} />
         ))}
@@ -65,7 +80,7 @@ export default function AssembleDetail() {
           alt={`Mech ${currentImageIndex + 1}`}
         />
         <button onClick={handleNextImage}>Next</button>
-      </div>
+      </div> */}
       <ul>
         {acAsm.partsList.map((part, index) => (
           <li key={index}>{part}</li>
@@ -73,11 +88,58 @@ export default function AssembleDetail() {
       </ul>
       <p>{acAsm.description}</p>
       <p>{acAsm.remarks}</p>
+
+      <ImageSwipe />
     </div>
   );
 }
 
+function ImageSwipe() {
+  const slideSettings = {
+    0: {
+      slidesPerView: 1.4,
+      spaceBetween: 10,
+    },
+    1024: {
+      slidesPerView: 2,
+      spaceBetween: 10,
+    },
+  };
 
+  return(
+    <Swiper
+    modules={[Navigation, Pagination, Autoplay]}
+    breakpoints={slideSettings} // slidesPerViewを指定
+    slidesPerView={"auto"} // ハイドレーションエラー対策
+    centeredSlides={true} // スライドを中央に配置
+    centeredSlidesBounds={true} // 最後のスライドが中央に来るように
+    loop={true} // スライドをループさせる
+    speed={1000} // スライドが切り替わる時の速度
+    autoplay={{
+      delay: 8000,
+      disableOnInteraction: false,
+    }} // スライド表示時間
+    navigation // ナビゲーション（左右の矢印）
+    pagination={{
+      clickable: true,
+    }} // ページネーション, クリックで対象のスライドに切り替わる
+    className="w-screen h-fit mx-auto border-2"
+  >
+    {images.map((src: string, index: number) => (
+      <SwiperSlide key={index} className="border-4 border-red-600">
+        <Image
+          src={src}
+          width={2000}
+          height={2000}
+          alt="Slider Image"
+          sizes=""
+          className="object-contain w-full border-8 border-blue-600"
+        />
+      </SwiperSlide>
+    ))}
+  </Swiper>
+  )
+}
 
 
 // export default function AssembleDetail() {
