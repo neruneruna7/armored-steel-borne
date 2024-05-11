@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <Layout>
         <section className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
-          <h1>AC Assemble</h1>
+          {/* <h1>AC Assemble</h1> */}
           <AssembleBoard />
         </section>
       </Layout>
