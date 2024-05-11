@@ -95,24 +95,11 @@ export default function AssembleDetail() {
 }
 
 function ImageSwipe() {
-  const slideSettings = {
-    0: {
-      slidesPerView: 1.4,
-      spaceBetween: 10,
-    },
-    1024: {
-      slidesPerView: 2,
-      spaceBetween: 10,
-    },
-  };
-
   return(
     <Swiper
     modules={[Navigation, Pagination, Autoplay]}
-    breakpoints={slideSettings} // slidesPerViewを指定
     slidesPerView={"auto"} // ハイドレーションエラー対策
     centeredSlides={true} // スライドを中央に配置
-    centeredSlidesBounds={true} // 最後のスライドが中央に来るように
     loop={true} // スライドをループさせる
     speed={1000} // スライドが切り替わる時の速度
     autoplay={{
@@ -122,18 +109,20 @@ function ImageSwipe() {
     navigation // ナビゲーション（左右の矢印）
     pagination={{
       clickable: true,
+      type: "progressbar",
     }} // ページネーション, クリックで対象のスライドに切り替わる
-    className="w-screen h-fit mx-auto border-2"
+    className="w-auto max-w-7xl h-fit min-h-80 mx-auto border-2"
   >
     {images.map((src: string, index: number) => (
-      <SwiperSlide key={index} className="border-4 border-red-600">
+      <SwiperSlide key={index} className="border-4 border-gray-600">
         <Image
           src={src}
           width={2000}
           height={2000}
+          // このwidthとheight指定の数字に意味，理由はない
           alt="Slider Image"
           sizes=""
-          className="object-contain w-full border-8 border-blue-600"
+          className="object-contain w-full"
         />
       </SwiperSlide>
     ))}
