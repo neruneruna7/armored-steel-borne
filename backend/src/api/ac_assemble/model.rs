@@ -1,10 +1,14 @@
+use serde::{Deserialize, Serialize};
 use share::model::Assemble::AcAssemble;
 use ulid::Ulid;
+use utoipa::ToSchema;
 
+#[derive(Deserialize, ToSchema)]
 pub(crate) struct AcAsmGetReq {
-    ulid: Ulid
+    pub ulid: Ulid
 }
 
+#[derive(Serialize, ToSchema)]
 pub(crate) struct AcAsmGetRes {
-    ac_assemble: AcAssemble
+    pub ac_assemble: AcAssemble
 }

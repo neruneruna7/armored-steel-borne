@@ -1,49 +1,50 @@
 use typeshare::typeshare;
 use ulid::Ulid;
 use serde::Serialize;
+use utoipa::ToSchema;
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Weapons {
-    r_arm: String,
-    l_arm: String,
-    r_back: String,
-    l_back: String,
+    pub r_arm: String,
+    pub l_arm: String,
+    pub r_back: String,
+    pub l_back: String,
 }
 
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Frame {
-    head: String,
-    core: String,
-    arms: String,
-    legs: String,
+    pub head: String,
+    pub core: String,
+    pub arms: String,
+    pub legs: String,
 }
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
-    weapons: Weapons,
-    frame: Frame,
+    pub weapons: Weapons,
+    pub frame: Frame,
 }
 
 #[typeshare]
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
-    ulid: Ulid,
-    pilot_name: String,
-    ac_name: String,
-    ac_card_image_url: String,
-    emblem_image_url: String,
-    ac_image_urls: Vec<String>,
-    parts: Parts,
-    description: String,
-    remarks: String,
+pub     ulid: Ulid,
+pub     pilot_name: String,
+pub     ac_name: String,
+pub     ac_card_image_url: String,
+pub     emblem_image_url: String,
+pub     ac_image_urls: Vec<String>,
+pub     parts: Parts,
+pub     description: String,
+pub     remarks: String,
 }
 
 

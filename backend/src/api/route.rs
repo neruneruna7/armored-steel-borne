@@ -1,13 +1,17 @@
 use axum::{routing::get, Json, Router};
+use share::model::Assemble::*;
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 use crate::AppState;
 
+use super::ac_assemble::{handler::get_ac_asm, model::*};
+
 
 pub fn route(state: AppState) -> Router {
     Router::new()
         .route("/healthz", get(healthz))
+        .route("/ac", get(get_ac_asm))
         .merge(
             SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi())
         )
@@ -28,7 +32,16 @@ async fn healthz() -> Json<&'static str> {
 #[derive(OpenApi)]
 #[openapi(
     paths(
-        healthz
-    )
+        healthz,
+        super::ac_assemble::handler::get_ac_asm,
+    ),
+    components(schemas(
+        AcAsmGetReq,
+        AcAsmGetRes,
+        AcAssemble,
+        Weapons,
+        Frame,
+        Parts,
+    ))
 )]
 struct ApiDoc;

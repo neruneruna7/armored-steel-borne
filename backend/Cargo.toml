@@ -32,5 +32,5 @@ share = { path = "../share" }
 
 
 # openapi関連
-utoipa = "4.2"
-utoipa-swagger-ui = {version = "6.0.0", features = ["axum"]}
+utoipa.workspace = true
+utoipa-swagger-ui = {workspace = true, features = ["axum"]}

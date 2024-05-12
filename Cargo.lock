@@ -2456,9 +2456,9 @@ name = "share"
 version = "0.1.0"
 dependencies = [
  "serde",
- "serde_json",
  "typeshare",
  "ulid",
+ "utoipa",
 ]
 
 [[package]]
