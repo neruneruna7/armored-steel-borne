@@ -12,6 +12,7 @@ mod deals;
 mod mail;
 mod payments;
 mod router;
+mod api;
 
 use router::create_api_router;
 use utoipa::{OpenApi};
@@ -57,16 +58,14 @@ async fn main(
     };
 
     let api_router = create_api_router(state);
+    let sub_router = api::route::route();
 
     let router = Router::new()
     .nest("/api", api_router).nest_service(
         "/",
         ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
     )
-    .route("/healthz", get(healthz))
-    .merge(
-        SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi())
-    );
+    .nest("/", sub_router);
 
     Ok(router.into())
 }
@@ -101,21 +100,3 @@ fn grab_secrets(secrets: shuttle_runtime::SecretStore) -> (String, String, Strin
     )
 }
 
-#[utoipa::path(
-    get,
-    path = "/healthz",
-    responses(
-        (status = 200, description = "OK", body = &'static str),
-    )
-)]
-async fn healthz() -> Json<&'static str> {
-    Json("Ok")
-}
-
-#[derive(OpenApi)]
-#[openapi(
-    paths(
-        healthz
-    )
-)]
-struct ApiDoc;
