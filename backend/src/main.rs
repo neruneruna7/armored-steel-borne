@@ -1,4 +1,5 @@
-use axum::extract::FromRef;
+use axum::routing::get;
+use axum::{extract::FromRef, Json};
 use axum::Router;
 use axum_extra::extract::cookie::Key;
 use sqlx::PgPool;
@@ -55,10 +56,11 @@ async fn main(
 
     let api_router = create_api_router(state);
 
-    let router = Router::new().nest("/api", api_router).nest_service(
+    let router = Router::new()
+    .nest("/api", api_router).nest_service(
         "/",
         ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
-    );
+    ).route("/healthz", get(healthz));
 
     Ok(router.into())
 }
@@ -91,4 +93,8 @@ fn grab_secrets(secrets: shuttle_runtime::SecretStore) -> (String, String, Strin
         mailgun_url,
         domain,
     )
+}
+
+async fn healthz() -> Json<&'static str> {
+    Json("Ok")
 }
