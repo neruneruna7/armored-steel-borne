@@ -4,6 +4,7 @@
 // 不要になったタイミングでファイルを削除すること
 
 export interface AcAssemble {
+    uuid: string, // UUIDもしくはULIDで一意なIDを付与
     pilotName: string,
     acName: string;
     acCardImageUrl: string;
@@ -36,6 +37,7 @@ export interface Frame {
 // ダミーデータ
 export const acAssembles: AcAssemble[] = [
     {
+        uuid: "test1",
         pilotName: "V.Ⅳ Rusty",
         acName: "STEEL HAZE",
         acCardImageUrl: "/ac/steel-haze.webp",
@@ -64,6 +66,7 @@ export const acAssembles: AcAssemble[] = [
         remarks: "These are remarks",
     },
     {
+        uuid: "test2",
         pilotName: "Pilot 2",
         acName: "Mech 2",
         acCardImageUrl: "/ac/mech2.jpg",

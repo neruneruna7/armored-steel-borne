@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 
 // ダミーデータ
@@ -12,11 +12,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import styles from "./index.module.css";
 
 export default function AssembleDetail() {
+  // クエリパラメータからUUIDを取得 
+  const router = useRouter();
+  const uuid = router.query.uuid;
 
   const acAsm = acAssembles[0];
+
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
@@ -25,6 +28,7 @@ export default function AssembleDetail() {
         <div className="m-5 ">
           <h1 className="text-2xl font-bold">AC: {acAsm.acName}</h1>
           <h2 className="text-xl">PILOT: {acAsm.pilotName}</h2>
+          <h2 className="text-xl">UUID: {uuid}</h2>
         </div>
       </div>
       <ImageSwipe images={acAsm.acImageUrls} />

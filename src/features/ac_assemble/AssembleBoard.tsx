@@ -1,42 +1,38 @@
-import Layout from "@/components/Layout";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { AcAssemble } from "./ac6Types";
 
-// interface AssembleData {
-//   name: string;
-//   imageUrls: string[];
-//   parts: string[];
-//   description: string;
-//   notes: string;
-// }
 
-interface AcAsm {
+interface AssembleCardProps {
+  uuid: string, // UUIDもしくはULIDで一意なIDを付与
   acPilotName: string,
   acName: string;
   acImageUrl: string;
   emblemImageUrl: string;
 }
 
-function AssembleCard({ mech }: { mech: AcAsm }) {
+function AssembleCard({ ac }: { ac: AssembleCardProps }) {
   return (
     // いい感じのホバー時のスタイルがわからん
-    <Link href="/debug" className="hover:mix-blend-luminosity hover:bg-gray-600" >
+    <Link href={{
+      pathname: "/debug",
+      query: { uuid: ac.uuid }
+    }} className="hover:mix-blend-luminosity hover:bg-gray-600" >
       <div className="border-4 w-80 h-72 relative">
         <div className="flex h-auto border-2">
           <div className="">
-            <Image src={mech.emblemImageUrl} alt={`Mech Image`} width={70} height={70} className="object-contain border-2" />
+            <Image src={ac.emblemImageUrl} alt={`Mech Image`} width={70} height={70} className="object-contain border-2" />
           </div>
           <div className="ml-4">
-            <h2>PILOT: {mech.acPilotName}</h2>
-            <h2>AC: {mech.acName}</h2>
+            <h2>PILOT: {ac.acPilotName}</h2>
+            <h2>AC: {ac.acName}</h2>
           </div>
           {/* <div className="border-4">
           <p>{mech.description}</p>
         </div> */}
         </div>
         <div className="border-2 relative w-full h-56">
-          <Image src={mech.acImageUrl} alt={`Mech Image`} fill className="object-contain" />
+          <Image src={ac.acImageUrl} alt={`Mech Image`} fill className="object-contain" />
         </div>
       </div>
     </Link>
@@ -44,74 +40,93 @@ function AssembleCard({ mech }: { mech: AcAsm }) {
 }
 
 
-const acData: AcAsm[] = [
+const acData: AssembleCardProps[] = [
   {
+    uuid: "test1",
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test2",
     acPilotName: "Jane Smith",
     acName: "Iron Guardian",
     acImageUrl: "/ac/iron.jpg",
     emblemImageUrl: "/ac/steel.jpg",
   },
   {
+    uuid: "test3",
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test4",
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
     emblemImageUrl: "/ac/rusty.jpg",
   },
   {
+    uuid: "test1",
+
     acPilotName: "John Doe",
     acName: "Armored Steel Borne",
     acImageUrl: "/ac/ac.jpg",
@@ -124,7 +139,7 @@ const acData: AcAsm[] = [
 export default function AssembleBoard() {
 
   const acCards = acData.map((acAsm, index) => (
-    <AssembleCard key={index} mech={acAsm} />
+    <AssembleCard key={index} ac={acAsm} />
   ));
 
   return (
