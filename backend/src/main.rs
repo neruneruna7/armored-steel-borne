@@ -57,8 +57,10 @@ async fn main(
         key: Key::generate(),
     };
 
-    let api_router = create_api_router(state);
-    let sub_router = api::route::route();
+    // 今は2つにルーターが分かれているが，あとで1つにする
+    // その都合でstateをクローンしている
+    let api_router = create_api_router(state.clone());
+    let sub_router = api::route::route(state);
 
     let router = Router::new()
     .nest("/api", api_router).nest_service(
