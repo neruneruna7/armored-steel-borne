@@ -6,7 +6,8 @@ use axum::{extract::Query, response::IntoResponse, Json};
 
 #[utoipa::path(
     get,
-    path = "/ac/{uuid}",
+    path = "/ac?ulid={ulid}",
+    context_path = "api2",
     responses(
         (status = 200, description = "OK", body = AcAsmGetRes),
     ),
