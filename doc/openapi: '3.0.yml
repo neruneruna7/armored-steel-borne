@@ -1,0 +1,25 @@
+openapi: '3.0.2'
+info:
+  title: armored steel borne API
+  version: '1.0'
+servers:
+- url: http://127.0.0.1:8000
+paths:
+  /healthz:
+    get:
+      responses:
+        '200':
+          description: OK
+  /api/v1/ac:
+    get:
+      responses:
+        '200':
+          description: OK
+    # post:
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+      # responses:
+      #   '201':
+      #     description: Created
