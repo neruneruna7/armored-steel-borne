@@ -1,0 +1,11 @@
+[config]
+default_to_workspace = false
+
+
+[tasks.typeshare]
+command = "typeshare"
+args = [
+    "./share",
+    "--lang=typescript",
+    "--output-file=./share/assemble_type.ts"
+]
