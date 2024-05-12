@@ -2,9 +2,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 // ダミーデータ
-import { Frame, acAssembles } from "./ac6Types";
+import { acAssembles } from "./ac6Types";
 
-import { Weapons } from "./ac6Types";
 
 // オプションをインポートする
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -12,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Frame, Weapons } from "../../../share/assemble_type";
 
 export default function AssembleDetail() {
   // クエリパラメータからUUIDを取得 

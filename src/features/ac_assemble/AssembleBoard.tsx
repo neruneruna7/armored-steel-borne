@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AcAssemble } from "./ac6Types";
+import { AcAssemble } from "../../../share/assemble_type";
 
 
 interface AssembleCardProps {

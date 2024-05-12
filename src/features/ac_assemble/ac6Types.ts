@@ -3,41 +3,13 @@
 // shere Rustクレートの作成にともない，仮の型を置いておく場所にする
 // 不要になったタイミングでファイルを削除すること
 
-export interface AcAssemble {
-    uuid: string, // UUIDもしくはULIDで一意なIDを付与
-    pilotName: string,
-    acName: string;
-    acCardImageUrl: string;
-    emblemImageUrl: string;
-    acImageUrls: string[]
-    parts: Parts,
-    description: string,
-    remarks: string,
-}
+import { AcAssemble } from "../../../share/assemble_type";
 
-export interface Parts {
-    weapons: Weapons;
-    frame: Frame
-}
-
-export interface Weapons {
-    rArm: string; //腕
-    lArm: string;
-    rBack: string; // 肩
-    lBack: string;
-}
-
-export interface Frame {
-    head: string,
-    core: string,
-    arms: string,
-    legs: string,
-}
 
 // ダミーデータ
 export const acAssembles: AcAssemble[] = [
     {
-        uuid: "test1",
+        ulid: "test1",
         pilotName: "V.Ⅳ Rusty",
         acName: "STEEL HAZE",
         acCardImageUrl: "/ac/steel-haze.webp",
@@ -66,7 +38,7 @@ export const acAssembles: AcAssemble[] = [
         remarks: "These are remarks",
     },
     {
-        uuid: "test2",
+        ulid: "test2",
         pilotName: "Pilot 2",
         acName: "Mech 2",
         acCardImageUrl: "/ac/mech2.jpg",
