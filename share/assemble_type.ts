@@ -3,14 +3,32 @@
 */
 
 export interface Weapons {
-	r_arm: string;
-	l_arm: string;
-	r_back: string;
-	l_back: string;
+	rArm: string;
+	lArm: string;
+	rBack: string;
+	lBack: string;
 }
 
-export enum TestEnum {
-	HandGan = "HandGan",
-	ShotGan = "ShotGan",
+export interface Frame {
+	head: string;
+	core: string;
+	legs: string;
+}
+
+export interface Parts {
+	wepons: Weapons;
+	frame: Frame;
+}
+
+export interface AcAssemble {
+	ulid: string;
+	pilotName: string;
+	acName: string;
+	acCardImageUrl: string;
+	emblemImageUrl: string;
+	acImageUrls: string[];
+	paarts: Parts;
+	description: string;
+	remarks: string;
 }
 
