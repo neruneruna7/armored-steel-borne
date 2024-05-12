@@ -14,6 +14,8 @@ mod payments;
 mod router;
 
 use router::create_api_router;
+use utoipa::{OpenApi};
+use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -60,7 +62,11 @@ async fn main(
     .nest("/api", api_router).nest_service(
         "/",
         ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
-    ).route("/healthz", get(healthz));
+    )
+    .route("/healthz", get(healthz))
+    .merge(
+        SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi())
+    );
 
     Ok(router.into())
 }
@@ -95,6 +101,21 @@ fn grab_secrets(secrets: shuttle_runtime::SecretStore) -> (String, String, Strin
     )
 }
 
+#[utoipa::path(
+    get,
+    path = "/healthz",
+    responses(
+        (status = 200, description = "OK", body = &'static str),
+    )
+)]
 async fn healthz() -> Json<&'static str> {
     Json("Ok")
 }
+
+#[derive(OpenApi)]
+#[openapi(
+    paths(
+        healthz
+    )
+)]
+struct ApiDoc;
