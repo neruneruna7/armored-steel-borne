@@ -14,6 +14,15 @@ function Navigation() {
         <li>
           <Link href="/register">Register</Link>
         </li>
+        {/* <li>
+          <Link href="/assemble">Assemble</Link>
+        </li> */}
+        <li>
+          <Link href="/debug">Debug</Link>
+        </li>
+        <li>
+          <Link href="/exampleindex">Example-index</Link>
+        </li>
       </ul>
     </nav>
   );

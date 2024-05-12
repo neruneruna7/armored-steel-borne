@@ -1,12 +1,12 @@
 import Layout from "@/components/Layout";
-import AssembleBoard from "@/features/ac_assemble/AssembleBoard";
+import AssembleDetail from "@/features/ac_assemble/AssembleDetail";
 
 export default function Home() {
   return (
     <>
       <Layout>
         <section className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
-          <AssembleBoard />
+          <AssembleDetail />
         </section>
       </Layout>
     </>
