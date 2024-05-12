@@ -19,6 +19,7 @@ pub struct Weapons {
 pub struct Frame {
     head: String,
     core: String,
+    arms: String,
     legs: String,
 }
 
@@ -26,7 +27,7 @@ pub struct Frame {
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
-    wepons: Weapons,
+    weapons: Weapons,
     frame: Frame,
 }
 
@@ -40,7 +41,7 @@ pub struct AcAssemble {
     ac_card_image_url: String,
     emblem_image_url: String,
     ac_image_urls: Vec<String>,
-    paarts: Parts,
+    parts: Parts,
     description: String,
     remarks: String,
 }

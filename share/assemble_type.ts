@@ -12,11 +12,12 @@ export interface Weapons {
 export interface Frame {
 	head: string;
 	core: string;
+	arms: string;
 	legs: string;
 }
 
 export interface Parts {
-	wepons: Weapons;
+	weapons: Weapons;
 	frame: Frame;
 }
 
@@ -27,7 +28,7 @@ export interface AcAssemble {
 	acCardImageUrl: string;
 	emblemImageUrl: string;
 	acImageUrls: string[];
-	paarts: Parts;
+	parts: Parts;
 	description: string;
 	remarks: string;
 }
