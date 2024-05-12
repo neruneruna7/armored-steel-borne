@@ -114,6 +114,7 @@ dependencies = [
  "rand",
  "reqwest",
  "serde",
+ "share",
  "shuttle-axum",
  "shuttle-runtime",
  "shuttle-shared-db",
@@ -122,6 +123,7 @@ dependencies = [
  "tokio",
  "tower",
  "tower-http",
+ "ulid",
  "utoipa",
  "utoipa-swagger-ui",
 ]
