@@ -5,7 +5,7 @@ use utoipa_swagger_ui::SwaggerUi;
 
 use crate::AppState;
 
-use super::ac_assemble::{handler::get_ac_asm, model::*};
+use super::ac_assemble::handler::get_ac_asm;
 
 
 pub fn route(state: AppState) -> Router {
