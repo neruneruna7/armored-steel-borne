@@ -39,3 +39,12 @@ export interface AcAsmGetRes {
 	acAssemble: AcAssemble;
 }
 
+export interface AcAsmListReq {
+	prevId?: string;
+	size?: number;
+}
+
+export interface AcAsmListRes {
+	acAssembles: AcAssemble[];
+}
+

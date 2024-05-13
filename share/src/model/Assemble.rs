@@ -60,16 +60,17 @@ pub struct AcAsmGetRes {
 }
 
 
-// #[typeshare]
-// #[derive(Deserialize, ToSchema)]
-// #[serde(rename_all = "camelCase")]
-// pub struct AcAsmListReq {
-//     pub size: usize
-// }
+#[typeshare]
+#[derive(Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmListReq {
+    pub prev_id: Option<Ulid>,
+    pub size: Option<u32>
+}
 
-// #[typeshare]
-// #[derive(Serialize, ToSchema)]
-// #[serde(rename_all = "camelCase")]
-// pub struct AcAsmListRes {
-//     pub ac_assembles: Vec<AcAssemble>
-// }
+#[typeshare]
+#[derive(Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmListRes {
+    pub ac_assembles: Vec<AcAssemble>
+}
