@@ -5,37 +5,88 @@ import Image from "next/image";
 import { acAssembles } from "./ac6Types";
 
 
+
 // オプションをインポートする
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Frame, Weapons } from "../../../share/assemble_type";
+import { AcAssemble, Frame, Weapons } from "../../../share/assemble_type";
+import { useEffect, useState } from "react";
+
+const ASSEMBLE_URL = "http://127.0.0.1:8000/ac?ulid=01HXPG5RS5C0H3ZBCMRTZVC0JN";
+
+const defaultAcAssemble: AcAssemble = {
+  ulid: "",
+  pilotName: "Jhon Doe",
+  acName: "",
+  acCardImageUrl: "",
+  emblemImageUrl: "",
+  acImageUrls: [""],
+  parts: {
+    weapons: {
+      rArm: "Rifle",
+      lArm: "Shield",
+      rBack: "Missile",
+      lBack: "Rifle",
+    },
+    frame: {
+      head: "Head",
+      core: "Core",
+      arms: "Arms",
+      legs: "Legs",
+    },
+  },
+  description: "",
+  remarks: "",
+};
+
+interface AcAsmGetRes {
+  ac_assemble: AcAssemble;
+}
+
+// const defaultAcAsmGetRes: AcAsmGetRes = {
+//   acAssemble: defaultAcAssemble,
+// };
 
 export default function AssembleDetail() {
   // クエリパラメータからUUIDを取得 
   const router = useRouter();
-  const uuid = router.query.uuid;
+  // const uuid = router.query.uuid;
+  const ulid = "01HXPG5RS5C0H3ZBCMRTZVC0JN";
+  
+  // const acAsm = acAssembles[0];
+  const [acAsm, setAcAsm] = useState<AcAssemble | undefined>(undefined);
 
-  const acAsm = acAssembles[0];
+  useEffect(() => {
+    if (ulid) {
+      fetch(`${ASSEMBLE_URL}`)
+        .then(response => {
+          console.log(response);
+          return response.json()
+        })
+        .then(data => setAcAsm(data))
+        .catch(error => console.error(error));
+    }
+  }, [ulid]);
 
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
       <div className="flex border-4">
-        <img className="w-32 h-32" src={acAsm.emblemImageUrl} alt="Emblem" />
+        <img className="w-32 h-32" src={acAsm?.emblemImageUrl} alt="Emblem" />
         <div className="m-5 ">
-          <h1 className="text-2xl font-bold">AC: {acAsm.acName}</h1>
-          <h2 className="text-xl">PILOT: {acAsm.pilotName}</h2>
-          <h2 className="text-xl">UUID: {uuid}</h2>
+          <h1 className="text-2xl font-bold">AC: {acAsm?.acName}</h1>
+          <h2 className="text-xl">PILOT: {acAsm?.pilotName}</h2>
+          <h2 className="text-xl">UUID: {ulid}</h2>
         </div>
       </div>
-      <ImageSwipe images={acAsm.acImageUrls} />
-      <WeaponView weapons={acAsm.parts.weapons} />
-      <FrameView frame={acAsm.parts.frame} />
-      <Description description={acAsm.description} />
-      <p>備考：{acAsm.remarks}</p>
+      <ImageSwipe images={acAsm?.acImageUrls ?? defaultAcAssemble.acImageUrls} />
+      <WeaponView weapons={acAsm?.parts.weapons ?? defaultAcAssemble.parts.weapons} />
+      <FrameView frame={acAsm?.parts.frame ?? defaultAcAssemble.parts.frame} />
+      <Description description={acAsm?.description ?? defaultAcAssemble.description} />
+      <p>備考：{acAsm?.remarks}</p>
     </div>
   );
 }

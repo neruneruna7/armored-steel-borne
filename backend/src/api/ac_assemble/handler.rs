@@ -41,14 +41,12 @@ pub async fn get_ac_asm(Query(req): Query<AcAsmGetReq>) -> impl IntoResponse {
             },
         },
         description: "アーキバスグループ強化人間部隊 ヴェスパーの第4隊長\n\nラスティはグループ傘下であるシュナイダー社の\n人材公募プログラムで見出され，半年に満たない短期でヴェスパー上位に抜擢された類を見ない経歴の持ち主である．彼は入隊以前に強化手術を受けており，詳細は不明だが本人の申告によると第8世代であるという".to_string(),
-        remarks: "These are remarks".to_string(),
+        remarks: "サーバーサイドで定義されたダミーデータ".to_string(),
     };
     (
         StatusCode::OK,
         Json(
-            AcAsmGetRes {
-                ac_assemble
-            }
+            ac_assemble
         )
     )
 }
