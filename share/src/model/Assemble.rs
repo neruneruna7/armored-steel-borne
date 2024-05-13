@@ -1,3 +1,5 @@
+use serde_with::serde_as;
+use serde_with::NoneAsEmptyString;
 use typeshare::typeshare;
 use ulid::Ulid;
 use serde::{Deserialize, Serialize};
@@ -53,23 +55,32 @@ pub     remarks: String,
 pub type AcAsmGetReq = Ulid;
 
 #[typeshare]
-#[derive(Serialize, ToSchema)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmGetRes {
     pub ac_assemble: AcAssemble
 }
 
 
+#[serde_as]
 #[typeshare]
-#[derive(Deserialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase", default)]
 pub struct AcAsmListReq {
+    #[serde_as(as = "NoneAsEmptyString")]
     pub prev_id: Option<Ulid>,
+    #[serde_as(as = "NoneAsEmptyString")]
     pub size: Option<u32>
 }
 
+impl Default for AcAsmListReq {
+    fn default() -> Self {
+        Self { prev_id: None, size: Some(20) }
+    }
+}
+
 #[typeshare]
-#[derive(Serialize, ToSchema)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmListRes {
     pub ac_assembles: Vec<AcAssemble>
