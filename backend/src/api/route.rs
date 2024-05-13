@@ -36,7 +36,7 @@ async fn healthz() -> Json<&'static str> {
         super::ac_assemble::handler::get_ac_asm,
     ),
     components(schemas(
-        AcAsmGetReq,
+        // AcAsmGetReq,
         AcAsmGetRes,
         AcAssemble,
         Weapons,

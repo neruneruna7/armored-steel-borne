@@ -15,7 +15,7 @@ responses(
 pub async fn list_ac_asm(Query(req): Query<AcAsmGetReq>) -> impl IntoResponse {
 // ここでAcAssembleのダミーデータを作成します。
 let ac_assemble = AcAssemble {
-    ulid: req.ulid,
+    ulid: req,
     pilot_name: "V.Ⅳ Rusty".to_string(),
     ac_name: "STEEL HAZE".to_string(),
     ac_card_image_url: "/ac/steel-haze.webp".to_string(),

@@ -13,7 +13,7 @@ responses(
     (status = 200, description = "OK", body = AcAsmGetRes),
 ),
 )]
-pub async fn get_ac_asm(Path(req): Path<Ulid>) -> impl IntoResponse {
+pub async fn get_ac_asm(Path(req): Path<AcAsmGetReq>) -> impl IntoResponse {
 // ここでAcAssembleのダミーデータを作成します。
 let ac_assemble = AcAssemble {
     ulid: req,
