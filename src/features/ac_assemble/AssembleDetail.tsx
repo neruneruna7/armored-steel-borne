@@ -14,6 +14,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { AcAsmGetRes, AcAssemble, Frame, Weapons } from "../../../share/assemble_type";
 import { useEffect, useState } from "react";
+import { serializePageInfos } from "next/dist/build/utils";
 
 const ASSEMBLE_URL = "http://127.0.0.1:8000/ac?ulid=01HXPG5RS5C0H3ZBCMRTZVC0JN";
 
@@ -42,10 +43,19 @@ const defaultAcAssemble: AcAssemble = {
   remarks: "",
 };
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+async function getAsm(ulid:string): Promise<any>  {
+  await sleep(5000);
+  const res = await fetch(`${ASSEMBLE_URL}`);
+  console.log(res);
+  return res.json();
+}
+
 // const defaultAcAsmGetRes: AcAsmGetRes = {
 //   acAssemble: defaultAcAssemble,
 // };
 
+let acAsm: AcAsmGetRes;
 export default function AssembleDetail() {
   // クエリパラメータからUUIDを取得 
   const router = useRouter();
@@ -53,20 +63,23 @@ export default function AssembleDetail() {
   const ulid = "01HXPG5RS5C0H3ZBCMRTZVC0JN";
   
   // const acAsm = acAssembles[0];
-  const [acAsm, setAcAsm] = useState<AcAsmGetRes | undefined>(undefined);
+  // const [acAsm, setAcAsm] = useState<AcAsmGetRes | undefined>(undefined);
+  
+  // useEffect(() => {
+  //   if (ulid) {
+  //     fetch(`${ASSEMBLE_URL}`)
+  //       .then(response => {
+  //         console.log(response);
+  //         return response.json()
+  //       })
+  //       .then(data => setAcAsm(data))
+  //       .catch(error => console.error(error));
+  //   }
+  // }, [ulid]);
 
-  useEffect(() => {
-    if (ulid) {
-      fetch(`${ASSEMBLE_URL}`)
-        .then(response => {
-          console.log(response);
-          return response.json()
-        })
-        .then(data => setAcAsm(data))
-        .catch(error => console.error(error));
-    }
-  }, [ulid]);
-
+  if (!acAsm) {
+    throw getAsm(ulid).then((data) => (acAsm = data));
+  }
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
