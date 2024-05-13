@@ -46,7 +46,9 @@ pub async fn get_ac_asm(Query(req): Query<AcAsmGetReq>) -> impl IntoResponse {
     (
         StatusCode::OK,
         Json(
-            ac_assemble
+            AcAsmGetRes {
+                ac_assemble
+            }
         )
     )
 }

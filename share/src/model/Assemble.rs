@@ -1,6 +1,6 @@
 use typeshare::typeshare;
 use ulid::Ulid;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[typeshare]
@@ -47,5 +47,18 @@ pub     description: String,
 pub     remarks: String,
 }
 
+#[typeshare]
+#[derive(Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmGetReq {
+    pub ulid: Ulid
+}
+
+#[typeshare]
+#[derive(Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmGetRes {
+    pub ac_assemble: AcAssemble
+}
 
 

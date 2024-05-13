@@ -12,7 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { AcAssemble, Frame, Weapons } from "../../../share/assemble_type";
+import { AcAsmGetRes, AcAssemble, Frame, Weapons } from "../../../share/assemble_type";
 import { useEffect, useState } from "react";
 
 const ASSEMBLE_URL = "http://127.0.0.1:8000/ac?ulid=01HXPG5RS5C0H3ZBCMRTZVC0JN";
@@ -42,10 +42,6 @@ const defaultAcAssemble: AcAssemble = {
   remarks: "",
 };
 
-interface AcAsmGetRes {
-  ac_assemble: AcAssemble;
-}
-
 // const defaultAcAsmGetRes: AcAsmGetRes = {
 //   acAssemble: defaultAcAssemble,
 // };
@@ -57,7 +53,7 @@ export default function AssembleDetail() {
   const ulid = "01HXPG5RS5C0H3ZBCMRTZVC0JN";
   
   // const acAsm = acAssembles[0];
-  const [acAsm, setAcAsm] = useState<AcAssemble | undefined>(undefined);
+  const [acAsm, setAcAsm] = useState<AcAsmGetRes | undefined>(undefined);
 
   useEffect(() => {
     if (ulid) {
@@ -75,18 +71,18 @@ export default function AssembleDetail() {
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
       <div className="flex border-4">
-        <img className="w-32 h-32" src={acAsm?.emblemImageUrl} alt="Emblem" />
+        <img className="w-32 h-32" src={acAsm?.acAssemble.emblemImageUrl} alt="Emblem" />
         <div className="m-5 ">
-          <h1 className="text-2xl font-bold">AC: {acAsm?.acName}</h1>
-          <h2 className="text-xl">PILOT: {acAsm?.pilotName}</h2>
+          <h1 className="text-2xl font-bold">AC: {acAsm?.acAssemble.acName}</h1>
+          <h2 className="text-xl">PILOT: {acAsm?.acAssemble.pilotName}</h2>
           <h2 className="text-xl">UUID: {ulid}</h2>
         </div>
       </div>
-      <ImageSwipe images={acAsm?.acImageUrls ?? defaultAcAssemble.acImageUrls} />
-      <WeaponView weapons={acAsm?.parts.weapons ?? defaultAcAssemble.parts.weapons} />
-      <FrameView frame={acAsm?.parts.frame ?? defaultAcAssemble.parts.frame} />
-      <Description description={acAsm?.description ?? defaultAcAssemble.description} />
-      <p>備考：{acAsm?.remarks}</p>
+      <ImageSwipe images={acAsm?.acAssemble.acImageUrls ?? defaultAcAssemble.acImageUrls} />
+      <WeaponView weapons={acAsm?.acAssemble.parts.weapons ?? defaultAcAssemble.parts.weapons} />
+      <FrameView frame={acAsm?.acAssemble.parts.frame ?? defaultAcAssemble.parts.frame} />
+      <Description description={acAsm?.acAssemble.description ?? defaultAcAssemble.description} />
+      <p>備考：{acAsm?.acAssemble.remarks}</p>
     </div>
   );
 }

@@ -33,3 +33,11 @@ export interface AcAssemble {
 	remarks: string;
 }
 
+export interface AcAsmGetReq {
+	ulid: string;
+}
+
+export interface AcAsmGetRes {
+	acAssemble: AcAssemble;
+}
+
