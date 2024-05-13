@@ -1,21 +1,22 @@
 use http::StatusCode;
 use share::model::Assemble::{AcAssemble, Frame, Parts, Weapons};
+use ulid::Ulid;
 
 use super::super::model::{AcAsmGetReq, AcAsmGetRes};
-use axum::{extract::Query, response::IntoResponse, Json};
+use axum::{extract::{Path, Query}, response::IntoResponse, Json};
 
 #[utoipa::path(
 get,
-path = "/ac?ulid={ulid}",
-context_path = "api2",
+path = "/ac/{ulid}",
+context_path = "api",
 responses(
     (status = 200, description = "OK", body = AcAsmGetRes),
 ),
 )]
-pub async fn get_ac_asm(Query(req): Query<AcAsmGetReq>) -> impl IntoResponse {
+pub async fn get_ac_asm(Path(req): Path<Ulid>) -> impl IntoResponse {
 // ここでAcAssembleのダミーデータを作成します。
 let ac_assemble = AcAssemble {
-    ulid: req.ulid,
+    ulid: req,
     pilot_name: "V.Ⅳ Rusty".to_string(),
     ac_name: "STEEL HAZE".to_string(),
     ac_card_image_url: "/ac/steel-haze.webp".to_string(),

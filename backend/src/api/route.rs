@@ -11,7 +11,7 @@ use super::ac_assemble::handler::get_ac_asm;
 pub fn route(state: AppState) -> Router {
     Router::new()
         .route("/healthz", get(healthz))
-        .route("/ac", get(get_ac_asm))
+        .route("/ac/:ulid", get(get_ac_asm))
         .merge(
             SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi())
         )
