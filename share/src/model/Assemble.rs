@@ -3,10 +3,11 @@ use serde_with::serde_as;
 use serde_with::NoneAsEmptyString;
 use typeshare::typeshare;
 use ulid::Ulid;
+use utoipa::IntoParams;
 use utoipa::ToSchema;
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Weapons {
     pub r_arm: String,
@@ -16,7 +17,7 @@ pub struct Weapons {
 }
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Frame {
     pub head: String,
@@ -26,7 +27,7 @@ pub struct Frame {
 }
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
@@ -34,7 +35,7 @@ pub struct Parts {
 }
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
     pub ulid: Ulid,
@@ -54,7 +55,7 @@ pub struct AcAssemble {
 pub type AcAsmGetReq = Ulid;
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmGetRes {
     pub ac_assemble: AcAssemble,
@@ -62,7 +63,7 @@ pub struct AcAsmGetRes {
 
 #[serde_as]
 #[typeshare]
-#[derive(Debug, Deserialize, ToSchema)]
+#[derive(Debug, Clone, Deserialize, IntoParams)]
 #[serde(rename_all = "camelCase", default)]
 pub struct AcAsmListReq {
     #[serde_as(as = "NoneAsEmptyString")]
@@ -81,7 +82,7 @@ impl Default for AcAsmListReq {
 }
 
 #[typeshare]
-#[derive(Debug, Serialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmListRes {
     pub ac_assembles: Vec<AcAssemble>,
