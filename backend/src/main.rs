@@ -1,10 +1,11 @@
 use axum::routing::get;
-use axum::{extract::FromRef, Json};
 use axum::Router;
+use axum::{extract::FromRef, Json};
 use axum_extra::extract::cookie::Key;
 use sqlx::PgPool;
 use tower_http::services::{ServeDir, ServeFile};
 
+mod api;
 mod auth;
 mod customers;
 mod dashboard;
@@ -12,10 +13,9 @@ mod deals;
 mod mail;
 mod payments;
 mod router;
-mod api;
 
 use router::create_api_router;
-use utoipa::{OpenApi};
+use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(Clone)]
@@ -63,11 +63,12 @@ async fn main(
     let sub_router = api::route::route(state);
 
     let router = Router::new()
-    .nest("/api", api_router).nest_service(
-        "/",
-        ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
-    )
-    .nest("/", sub_router);
+        .nest("/api", api_router)
+        .nest_service(
+            "/",
+            ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
+        )
+        .nest("/", sub_router);
 
     Ok(router.into())
 }
@@ -101,4 +102,3 @@ fn grab_secrets(secrets: shuttle_runtime::SecretStore) -> (String, String, Strin
         domain,
     )
 }
-

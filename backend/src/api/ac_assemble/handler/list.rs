@@ -1,5 +1,6 @@
 use http::StatusCode;
 use share::model::Assemble::{AcAssemble, Frame, Parts, Weapons};
+use ulid::Ulid;
 
 use super::super::model::{AcAsmGetReq, AcAsmGetRes};
 use axum::{extract::Query, response::IntoResponse, Json};
@@ -13,9 +14,10 @@ responses(
 ),
 )]
 pub async fn list_ac_asm(Query(req): Query<AcAsmGetReq>) -> impl IntoResponse {
-// ここでAcAssembleのダミーデータを作成します。
-let ac_assemble = AcAssemble {
-    ulid: req,
+    // ここでAcAssembleのダミーデータを作成します。
+    let ulid = Ulid::new();
+    let ac_assemble = AcAssemble {
+    ulid: ulid,
     pilot_name: "V.Ⅳ Rusty".to_string(),
     ac_name: "STEEL HAZE".to_string(),
     ac_card_image_url: "/ac/steel-haze.webp".to_string(),
@@ -43,12 +45,5 @@ let ac_assemble = AcAssemble {
     description: "アーキバスグループ強化人間部隊 ヴェスパーの第4隊長\n\nラスティはグループ傘下であるシュナイダー社の\n人材公募プログラムで見出され，半年に満たない短期でヴェスパー上位に抜擢された類を見ない経歴の持ち主である．彼は入隊以前に強化手術を受けており，詳細は不明だが本人の申告によると第8世代であるという".to_string(),
     remarks: "サーバーサイドで定義されたダミーデータ".to_string(),
 };
-(
-    StatusCode::OK,
-    Json(
-        AcAsmGetRes {
-            ac_assemble
-        }
-    )
-)
+    (StatusCode::OK, Json(AcAsmGetRes { ac_assemble }))
 }

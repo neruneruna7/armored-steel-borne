@@ -1,8 +1,8 @@
+use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use serde_with::NoneAsEmptyString;
 use typeshare::typeshare;
 use ulid::Ulid;
-use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 #[typeshare]
@@ -14,7 +14,6 @@ pub struct Weapons {
     pub r_back: String,
     pub l_back: String,
 }
-
 
 #[typeshare]
 #[derive(Debug, Serialize, ToSchema)]
@@ -38,15 +37,15 @@ pub struct Parts {
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
-pub     ulid: Ulid,
-pub     pilot_name: String,
-pub     ac_name: String,
-pub     ac_card_image_url: String,
-pub     emblem_image_url: String,
-pub     ac_image_urls: Vec<String>,
-pub     parts: Parts,
-pub     description: String,
-pub     remarks: String,
+    pub ulid: Ulid,
+    pub pilot_name: String,
+    pub ac_name: String,
+    pub ac_card_image_url: String,
+    pub emblem_image_url: String,
+    pub ac_image_urls: Vec<String>,
+    pub parts: Parts,
+    pub description: String,
+    pub remarks: String,
 }
 
 #[typeshare]
@@ -58,9 +57,8 @@ pub type AcAsmGetReq = Ulid;
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmGetRes {
-    pub ac_assemble: AcAssemble
+    pub ac_assemble: AcAssemble,
 }
-
 
 #[serde_as]
 #[typeshare]
@@ -70,12 +68,15 @@ pub struct AcAsmListReq {
     #[serde_as(as = "NoneAsEmptyString")]
     pub prev_id: Option<Ulid>,
     #[serde_as(as = "NoneAsEmptyString")]
-    pub size: Option<u32>
+    pub size: Option<u32>,
 }
 
 impl Default for AcAsmListReq {
     fn default() -> Self {
-        Self { prev_id: None, size: Some(20) }
+        Self {
+            prev_id: None,
+            size: Some(20),
+        }
     }
 }
 
@@ -83,5 +84,5 @@ impl Default for AcAsmListReq {
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmListRes {
-    pub ac_assembles: Vec<AcAssemble>
+    pub ac_assembles: Vec<AcAssemble>,
 }

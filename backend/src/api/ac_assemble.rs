@@ -1,2 +1,2 @@
-pub(super) mod model;
 pub(super) mod handler;
+pub(super) mod model;
