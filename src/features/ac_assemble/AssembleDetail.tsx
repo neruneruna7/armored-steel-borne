@@ -2,9 +2,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 // ダミーデータ
-import { acAssembles } from "./ac6Types";
-
-
+// import { acAssembles } from "./ac6Types";
 
 // オプションをインポートする
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -12,90 +10,81 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { AcAsmGetRes, AcAssemble, Frame, Weapons } from "../../../share/assemble_type";
-import { useEffect, useState } from "react";
-import { serializePageInfos } from "next/dist/build/utils";
+import { AcAsmGetRes, Frame, Weapons } from "../../../share/assemble_type";
 
-const ASSEMBLE_URL = "http://127.0.0.1:8000/ac?ulid=01HXPG5RS5C0H3ZBCMRTZVC0JN";
+const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/01HXPG5RS5C0H3ZBCMRTZVC0JN";
 
-const defaultAcAssemble: AcAssemble = {
-  ulid: "",
-  pilotName: "Jhon Doe",
-  acName: "",
-  acCardImageUrl: "",
-  emblemImageUrl: "",
-  acImageUrls: [""],
-  parts: {
-    weapons: {
-      rArm: "Rifle",
-      lArm: "Shield",
-      rBack: "Missile",
-      lBack: "Rifle",
-    },
-    frame: {
-      head: "Head",
-      core: "Core",
-      arms: "Arms",
-      legs: "Legs",
-    },
-  },
-  description: "",
-  remarks: "",
-};
+// const defaultAcAssemble: AcAssemble = {
+//   ulid: "",
+//   pilotName: "Jhon Doe",
+//   acName: "",
+//   acCardImageUrl: "",
+//   emblemImageUrl: "",
+//   acImageUrls: [""],
+//   parts: {
+//     weapons: {
+//       rArm: "Rifle",
+//       lArm: "Shield",
+//       rBack: "Missile",
+//       lBack: "Rifle",
+//     },
+//     frame: {
+//       head: "Head",
+//       core: "Core",
+//       arms: "Arms",
+//       legs: "Legs",
+//     },
+//   },
+//   description: "",
+//   remarks: "",
+// };
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function getAsm(ulid:string): Promise<any>  {
-  await sleep(5000);
-  const res = await fetch(`${ASSEMBLE_URL}`);
-  console.log(res);
-  return res.json();
+async function getAsm(ulid:string): Promise<AcAsmGetRes>  {
+  await sleep(1000);
+  try {
+    const res = await fetch(`${ASSEMBLE_URL}`);
+    console.log(res);
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (e: any) {
+    console.log(`Error: ${e}`);
+    return e;
+  }
 }
 
 // const defaultAcAsmGetRes: AcAsmGetRes = {
 //   acAssemble: defaultAcAssemble,
 // };
 
-let acAsm: AcAsmGetRes;
+let acAsmGetRes: AcAsmGetRes | undefined;
 export default function AssembleDetail() {
+  console.log("AssembleDetail");
   // クエリパラメータからUUIDを取得 
-  const router = useRouter();
+  // const router = useRouter();
   // const uuid = router.query.uuid;
   const ulid = "01HXPG5RS5C0H3ZBCMRTZVC0JN";
   
-  // const acAsm = acAssembles[0];
-  // const [acAsm, setAcAsm] = useState<AcAsmGetRes | undefined>(undefined);
-  
-  // useEffect(() => {
-  //   if (ulid) {
-  //     fetch(`${ASSEMBLE_URL}`)
-  //       .then(response => {
-  //         console.log(response);
-  //         return response.json()
-  //       })
-  //       .then(data => setAcAsm(data))
-  //       .catch(error => console.error(error));
-  //   }
-  // }, [ulid]);
-
-  if (!acAsm) {
-    throw getAsm(ulid).then((data) => (acAsm = data));
+  if (acAsmGetRes === undefined) {
+    throw getAsm(ulid).then((data) => (acAsmGetRes = data));
   }
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
       <div className="flex border-4">
-        <img className="w-32 h-32" src={acAsm?.acAssemble.emblemImageUrl} alt="Emblem" />
+        <img className="w-32 h-32" src={acAsmGetRes.acAssemble.emblemImageUrl} alt="Emblem" />
         <div className="m-5 ">
-          <h1 className="text-2xl font-bold">AC: {acAsm?.acAssemble.acName}</h1>
-          <h2 className="text-xl">PILOT: {acAsm?.acAssemble.pilotName}</h2>
-          <h2 className="text-xl">UUID: {ulid}</h2>
+          <h1 className="text-2xl font-bold">AC: {acAsmGetRes.acAssemble.acName}</h1>
+          <h2 className="text-xl">PILOT: {acAsmGetRes.acAssemble.pilotName}</h2>
+          <h2 className="text-xl">ULID: {ulid}</h2>
         </div>
       </div>
-      <ImageSwipe images={acAsm?.acAssemble.acImageUrls ?? defaultAcAssemble.acImageUrls} />
-      <WeaponView weapons={acAsm?.acAssemble.parts.weapons ?? defaultAcAssemble.parts.weapons} />
-      <FrameView frame={acAsm?.acAssemble.parts.frame ?? defaultAcAssemble.parts.frame} />
-      <Description description={acAsm?.acAssemble.description ?? defaultAcAssemble.description} />
-      <p>備考：{acAsm?.acAssemble.remarks}</p>
+      <ImageSwipe images={acAsmGetRes.acAssemble.acImageUrls} />
+      <WeaponView weapons={acAsmGetRes.acAssemble.parts.weapons} />
+      <FrameView frame={acAsmGetRes.acAssemble.parts.frame} />
+      <Description description={acAsmGetRes.acAssemble.description} />
+      <p>備考：{acAsmGetRes.acAssemble.remarks}</p>
     </div>
   );
 }

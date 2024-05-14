@@ -6,11 +6,11 @@ export default function Home() {
   return (
     <>
       <Layout>
-        <Suspense fallback={<div>Loading...</div>} >
-          <section className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
+        <section className="min-h-full py-40 w-full flex flex-col justify-center items-center gap-10">
+          <Suspense fallback={<div>Loading...</div>} >
             <AssembleDetail />
-          </section>
-        </Suspense>
+          </Suspense>
+        </section>
       </Layout>
     </>
   );

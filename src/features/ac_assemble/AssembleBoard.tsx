@@ -1,22 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
-import { AcAssemble } from "../../../share/assemble_type";
-
+import { AcAsmListRes, AcAssemble } from "../../../share/assemble_type";
+import { useEffect, useState } from "react";
 
 interface AssembleCardProps {
-  uuid: string, // UUIDもしくはULIDで一意なIDを付与
-  acPilotName: string,
+  ulid: string, // UUIDもしくはULIDで一意なIDを付与
+  pilotName: string,
   acName: string;
-  acImageUrl: string;
+  acCardImageUrl: string;
   emblemImageUrl: string;
 }
 
+// type AssembleCardProps = AcAssemble;
+
+
+
 function AssembleCard({ ac }: { ac: AssembleCardProps }) {
+
   return (
     // いい感じのホバー時のスタイルがわからん
     <Link href={{
       pathname: "/debug",
-      query: { uuid: ac.uuid }
+      query: { uuid: ac.ulid }
     }} className="hover:mix-blend-luminosity hover:bg-gray-600" >
       <div className="border-4 w-80 h-72 relative">
         <div className="flex h-auto border-2">
@@ -24,15 +29,12 @@ function AssembleCard({ ac }: { ac: AssembleCardProps }) {
             <Image src={ac.emblemImageUrl} alt={`Mech Image`} width={70} height={70} className="object-contain border-2" />
           </div>
           <div className="ml-4">
-            <h2>PILOT: {ac.acPilotName}</h2>
+            <h2>PILOT: {ac.pilotName}</h2>
             <h2>AC: {ac.acName}</h2>
           </div>
-          {/* <div className="border-4">
-          <p>{mech.description}</p>
-        </div> */}
         </div>
         <div className="border-2 relative w-full h-56">
-          <Image src={ac.acImageUrl} alt={`Mech Image`} fill className="object-contain" />
+          <Image src={ac.acCardImageUrl} alt={`Mech Image`} fill className="object-contain" />
         </div>
       </div>
     </Link>
@@ -40,105 +42,140 @@ function AssembleCard({ ac }: { ac: AssembleCardProps }) {
 }
 
 
-const acData: AssembleCardProps[] = [
-  {
-    uuid: "test1",
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test2",
-    acPilotName: "Jane Smith",
-    acName: "Iron Guardian",
-    acImageUrl: "/ac/iron.jpg",
-    emblemImageUrl: "/ac/steel.jpg",
-  },
-  {
-    uuid: "test3",
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test4",
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+// const acData: AssembleCardProps[] = [
+//   {
+//     uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test2",
+//     acPilotName: "Jane Smith",
+//     acName: "Iron Guardian",
+//     acImageUrl: "/ac/iron.jpg",
+//     emblemImageUrl: "/ac/steel.jpg",
+//   },
+//   {
+//     uuid: "test3",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test4",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  {
-    uuid: "test1",
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   {
+//     uuid: "test1",
 
-    acPilotName: "John Doe",
-    acName: "Armored Steel Borne",
-    acImageUrl: "/ac/ac.jpg",
-    emblemImageUrl: "/ac/rusty.jpg",
-  },
-  // Add more AC data objects as needed
-];
+//     acPilotName: "John Doe",
+//     acName: "Armored Steel Borne",
+//     acImageUrl: "/ac/ac.jpg",
+//     emblemImageUrl: "/ac/rusty.jpg",
+//   },
+//   // Add more AC data objects as needed
+// ];
+
+function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCardProps {
+  // ここでacAssembleをAcAsmCardPropsに変換します。
+  const re: AssembleCardProps = {
+    ulid: acAssemble.ulid,
+    pilotName: acAssemble.pilotName,
+    acName: acAssemble.acName,
+    acCardImageUrl: acAssemble.acCardImageUrl,
+    emblemImageUrl: acAssemble.emblemImageUrl,
+  };
+  return re;
+}
 
 
+const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+async function listAsm(): Promise<AcAsmListRes>  {
+  await sleep(5000);
+  const res = await fetch(`${ASSEMBLE_LIST_URL}`);
+  console.log(res);
+  return res.json();
+}
+
+let acAsmList: AcAsmListRes;
 export default function AssembleBoard() {
+  // const [acAsmList, setAcAsm] = useState<AcAsmListRes | undefined>(undefined);
+  // if (!acAsmList) {
+  //   throw listAsm().then((data) => (setAcAsm(data)));
+  // }
+  if (!acAsmList) {
+    throw listAsm().then((data) => (acAsmList = data));
+  }
+  // useEffect(() => {
+  //   listAsm().then((data) => setAcAsm(data));
+  // }, []);
 
-  const acCards = acData.map((acAsm, index) => (
+  const asmCardProps = acAsmList.acAssembles.map((acAsm) => convertAcAssembleToAcAsmCardProps(acAsm));
+
+  const acCards = asmCardProps.map((acAsm, index) => (
     <AssembleCard key={index} ac={acAsm} />
   ));
 

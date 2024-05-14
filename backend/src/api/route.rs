@@ -10,8 +10,8 @@ use super::ac_assemble::handler::{get_ac_asm, list_ac_asm};
 pub fn route(state: AppState) -> Router {
     Router::new()
         .route("/healthz", get(healthz))
-        .route("/ac/:ulid", get(get_ac_asm))
-        .route("/ac", get(list_ac_asm))
+        .route("/asm/:ulid", get(get_ac_asm))
+        .route("/asm/list", get(list_ac_asm))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
         .with_state(state)
 }

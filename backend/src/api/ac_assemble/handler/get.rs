@@ -11,8 +11,9 @@ use axum::{
 
 #[utoipa::path(
 get,
-path = "/ac/{ulid}",
+path = "/asm/{ulid}",
 context_path = "api",
+// params(Ulid),
 responses(
     (status = 200, description = "OK", body = AcAsmGetRes),
 ),
