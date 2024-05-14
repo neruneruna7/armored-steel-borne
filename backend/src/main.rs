@@ -1,6 +1,5 @@
-use axum::routing::get;
 use axum::Router;
-use axum::{extract::FromRef, Json};
+use axum::extract::FromRef;
 use axum_extra::extract::cookie::Key;
 use sqlx::PgPool;
 use tower_http::services::{ServeDir, ServeFile};
@@ -15,8 +14,6 @@ mod payments;
 mod router;
 
 use router::create_api_router;
-use utoipa::OpenApi;
-use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(Clone)]
 pub struct AppState {

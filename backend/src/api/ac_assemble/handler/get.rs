@@ -1,12 +1,10 @@
 use http::StatusCode;
-use share::model::Assemble::{AcAssemble, Frame, Parts, Weapons};
-use ulid::Ulid;
+use share::model::assemble::{AcAsmGetReq, AcAsmGetRes};
 
 use crate::api::ac_assemble::dummy_data;
 
-use super::super::model::{AcAsmGetReq, AcAsmGetRes};
 use axum::{
-    extract::{Path, Query},
+    extract::Path,
     response::IntoResponse,
     Json,
 };
