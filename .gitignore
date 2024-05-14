@@ -37,3 +37,7 @@ next-env.d.ts
 /target
 .shuttle-storage
 Secrets*.toml
+
+
+# cargo
+.cargo/

@@ -4,8 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-ulid = {version = "*", features = ["serde"]}
-serde = "*"
-serde_json = "*"
+ulid = { workspace=true , features = ["serde"]}
+serde.workspace = true
+serde_with.workspace = true
+serde_json.workspace = true
+# serde_json.workspace = true
+utoipa.workspace = true
 
 typeshare = "1.0"

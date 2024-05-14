@@ -21,8 +21,8 @@ pub struct PaymentInfo {
 }
 
 pub async fn create_checkout(
-    State(state): State<AppState>,
-    Json(req): Json<PaymentInfo>,
+    State(_state): State<AppState>,
+    Json(_req): Json<PaymentInfo>,
 ) -> Result<StatusCode, StatusCode> {
     // let ctx = stripe::Client::new(&state.stripe_key);
 

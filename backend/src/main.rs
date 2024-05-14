@@ -1,9 +1,10 @@
-use axum::extract::FromRef;
 use axum::Router;
+use axum::extract::FromRef;
 use axum_extra::extract::cookie::Key;
 use sqlx::PgPool;
 use tower_http::services::{ServeDir, ServeFile};
 
+mod api;
 mod auth;
 mod customers;
 mod dashboard;
@@ -53,12 +54,18 @@ async fn main(
         key: Key::generate(),
     };
 
-    let api_router = create_api_router(state);
+    // 今は2つにルーターが分かれているが，あとで1つにする
+    // その都合でstateをクローンしている
+    let api_router = create_api_router(state.clone());
+    let sub_router = api::route::route(state);
 
-    let router = Router::new().nest("/api", api_router).nest_service(
-        "/",
-        ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
-    );
+    let router = Router::new()
+        .nest("/api", api_router)
+        .nest_service(
+            "/",
+            ServeDir::new("dist").not_found_service(ServeFile::new("dist/index.html")),
+        )
+        .nest("/", sub_router);
 
     Ok(router.into())
 }

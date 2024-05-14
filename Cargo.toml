@@ -1,3 +1,16 @@
 [workspace]
 resolver = "2"
 members = ["backend", "share"]
+
+# [profile.dev]
+# debug = 0
+
+[workspace.dependencies]
+ulid = {version = "1", features = ["serde"]}
+serde = "1"
+serde_with = "3.8"
+serde_json = "1"
+
+
+utoipa = {version = "4.2", features = ["axum_extras","ulid"]}
+utoipa-swagger-ui = {version = "6.0.0", features = ["axum"]}

@@ -1,0 +1,9 @@
+GET http://127.0.0.1:8000/asm/01HXPG5RS5C0H3ZBCMRTZVC0JN
+
+GET http://127.0.0.1:8000/asm/list
+
+
+GET http://127.0.0.1:8000/api2/healthz
+
+
+GET http://127.0.0.1:8000/api2/healthzeeee

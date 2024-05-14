@@ -1,9 +1,4 @@
-import { useRouter } from "next/router";
 import Image from "next/image";
-
-// ダミーデータ
-import { acAssembles } from "./ac6Types";
-
 
 // オプションをインポートする
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -11,31 +6,62 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Frame, Weapons } from "../../../share/assemble_type";
+import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemble_type";
 
-export default function AssembleDetail() {
-  // クエリパラメータからUUIDを取得 
-  const router = useRouter();
-  const uuid = router.query.uuid;
 
-  const acAsm = acAssembles[0];
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+async function getAsm(ulid: string | string[] | undefined): Promise<AcAsmGetRes> {
+  const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
+  // とりあえず動作確認のためにundifinedも許容
+  await sleep(1000);
+  try {
+    const res = await fetch(`${ASSEMBLE_URL}${ulid}`);
+    console.log(res);
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (e: any) {
+    console.log(`Error: ${e}`);
+    return e;
+  }
+}
 
+const dataMap: Map<string, AcAsmGetRes> = new Map();
+
+function useData1(ulid: string): AcAsmGetRes {
+  const cachedData = dataMap.get(ulid);
+  if (cachedData === undefined) {
+    throw getAsm(ulid).then((d) => dataMap.set(ulid, d));
+  }
+  return cachedData;
+}
+
+interface AssembleDetailProps {
+  ulid: string
+}
+
+// let acAsmGetRes: AcAsmGetRes | undefined;
+export default function AssembleDetail({ ulid }: AssembleDetailProps) {
+  console.log("AssembleDetail");
+  console.log(ulid);
+
+  const acAsmGetRes = useData1(ulid);
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
       <div className="flex border-4">
-        <img className="w-32 h-32" src={acAsm.emblemImageUrl} alt="Emblem" />
+        <img className="w-32 h-32" src={acAsmGetRes.acAssemble.emblemImageUrl} alt="Emblem" />
         <div className="m-5 ">
-          <h1 className="text-2xl font-bold">AC: {acAsm.acName}</h1>
-          <h2 className="text-xl">PILOT: {acAsm.pilotName}</h2>
-          <h2 className="text-xl">UUID: {uuid}</h2>
+          <h1 className="text-2xl font-bold">AC: {acAsmGetRes.acAssemble.acName}</h1>
+          <h2 className="text-xl">PILOT: {acAsmGetRes.acAssemble.pilotName}</h2>
+          <h2 className="text-xl">ULID: {ulid}</h2>
         </div>
       </div>
-      <ImageSwipe images={acAsm.acImageUrls} />
-      <WeaponView weapons={acAsm.parts.weapons} />
-      <FrameView frame={acAsm.parts.frame} />
-      <Description description={acAsm.description} />
-      <p>備考：{acAsm.remarks}</p>
+      <ImageSwipe images={acAsmGetRes.acAssemble.acImageUrls} />
+      <WeaponView weapons={acAsmGetRes.acAssemble.parts.weapons} />
+      <FrameView frame={acAsmGetRes.acAssemble.parts.frame} />
+      <Description description={acAsmGetRes.acAssemble.description} />
+      <p>備考：{acAsmGetRes.acAssemble.remarks}</p>
     </div>
   );
 }
@@ -44,7 +70,7 @@ interface ImageSwipeProps {
   images: string[];
 }
 
-function ImageSwipe({images}: ImageSwipeProps) {
+function ImageSwipe({ images }: ImageSwipeProps) {
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
