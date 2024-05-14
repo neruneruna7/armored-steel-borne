@@ -20,8 +20,8 @@ function AssembleCard({ ac }: { ac: AssembleCardProps }) {
   return (
     // いい感じのホバー時のスタイルがわからん
     <Link href={{
-      pathname: "/debug",
-      query: { uuid: ac.ulid }
+      pathname: `/assembledetail/${ac.ulid}`,
+      // query: { ulid: ac.ulid }
     }} className="hover:mix-blend-luminosity hover:bg-gray-600" >
       <div className="border-4 w-80 h-72 relative">
         <div className="flex h-auto border-2">
@@ -154,11 +154,11 @@ const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function listAsm(): Promise<AcAsmListRes>  {
-  await sleep(5000);
   const res = await fetch(`${ASSEMBLE_LIST_URL}`);
   console.log(res);
-  return res.json();
-}
+  const data = await res.json();
+  console.log(data);
+  return data;}
 
 let acAsmList: AcAsmListRes;
 export default function AssembleBoard() {

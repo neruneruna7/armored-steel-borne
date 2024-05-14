@@ -10,9 +10,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { AcAsmGetRes, Frame, Weapons } from "../../../share/assemble_type";
+import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemble_type";
 
-const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/01HXPG5RS5C0H3ZBCMRTZVC0JN";
+const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
 
 // const defaultAcAssemble: AcAssemble = {
 //   ulid: "",
@@ -40,10 +40,11 @@ const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/01HXPG5RS5C0H3ZBCMRTZVC0JN";
 // };
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function getAsm(ulid:string): Promise<AcAsmGetRes>  {
+async function getAsm(ulid:string | string[] | undefined): Promise<AcAsmGetRes>  {
+  // とりあえず動作確認のためにundifinedも許容
   await sleep(1000);
   try {
-    const res = await fetch(`${ASSEMBLE_URL}`);
+    const res = await fetch(`${ASSEMBLE_URL}${ulid}`);
     console.log(res);
     const data = await res.json();
     console.log(data);
@@ -54,21 +55,38 @@ async function getAsm(ulid:string): Promise<AcAsmGetRes>  {
   }
 }
 
-// const defaultAcAsmGetRes: AcAsmGetRes = {
-//   acAssemble: defaultAcAssemble,
-// };
+const dataMap: Map<string, AcAsmGetRes> = new Map();
 
-let acAsmGetRes: AcAsmGetRes | undefined;
-export default function AssembleDetail() {
-  console.log("AssembleDetail");
-  // クエリパラメータからUUIDを取得 
-  // const router = useRouter();
-  // const uuid = router.query.uuid;
-  const ulid = "01HXPG5RS5C0H3ZBCMRTZVC0JN";
-  
-  if (acAsmGetRes === undefined) {
-    throw getAsm(ulid).then((data) => (acAsmGetRes = data));
+function useData1(ulid: string): AcAsmGetRes {
+  const cachedData = dataMap.get(ulid);
+  if (cachedData === undefined) {
+    throw getAsm(ulid).then((d) => dataMap.set(ulid, d));
   }
+  return cachedData;
+}
+
+interface AssembleDetailProps {
+  ulid: string
+}
+
+// let acAsmGetRes: AcAsmGetRes | undefined;
+export default function AssembleDetail({ulid}: AssembleDetailProps) {
+  console.log("AssembleDetail");
+  // クエリパラメータからULIDを取得 
+  // const router = useRouter();
+  // let ulid = router.query.ulid;
+  // ulidをstring型のみにしたい
+  console.log(ulid);
+  // if (typeof ulid !== "string") {
+  //   // ulidがstring型でない場合、空文字列を設定します。
+  //   // このやり方が正しいのかはわからないけど，とりあえずこれで対処
+  //   ulid = "";
+  // }
+  
+  // if (acAsmGetRes === undefined) {
+  //   throw getAsm(ulid).then((data) => (acAsmGetRes = data));
+  // }
+  const acAsmGetRes = useData1(ulid);
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
