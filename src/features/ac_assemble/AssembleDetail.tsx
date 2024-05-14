@@ -10,7 +10,7 @@ import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemb
 
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function getAsm(ulid:string | string[] | undefined): Promise<AcAsmGetRes>  {
+async function getAsm(ulid: string | string[] | undefined): Promise<AcAsmGetRes> {
   const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
   // とりあえず動作確認のためにundifinedも許容
   await sleep(1000);
@@ -41,7 +41,7 @@ interface AssembleDetailProps {
 }
 
 // let acAsmGetRes: AcAsmGetRes | undefined;
-export default function AssembleDetail({ulid}: AssembleDetailProps) {
+export default function AssembleDetail({ ulid }: AssembleDetailProps) {
   console.log("AssembleDetail");
   console.log(ulid);
 
@@ -70,7 +70,7 @@ interface ImageSwipeProps {
   images: string[];
 }
 
-function ImageSwipe({images}: ImageSwipeProps) {
+function ImageSwipe({ images }: ImageSwipeProps) {
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}

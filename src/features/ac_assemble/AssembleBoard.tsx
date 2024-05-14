@@ -51,14 +51,15 @@ function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCard
 
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function listAsm(): Promise<AcAsmListRes>  {
+async function listAsm(): Promise<AcAsmListRes> {
   const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
 
   const res = await fetch(`${ASSEMBLE_LIST_URL}`);
   console.log(res);
   const data = await res.json();
   console.log(data);
-  return data;}
+  return data;
+}
 
 let acAsmList: AcAsmListRes;
 export default function AssembleBoard() {
