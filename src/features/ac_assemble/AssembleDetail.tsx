@@ -1,8 +1,4 @@
-import { useRouter } from "next/router";
 import Image from "next/image";
-
-// ダミーデータ
-// import { acAssembles } from "./ac6Types";
 
 // オプションをインポートする
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -12,35 +8,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemble_type";
 
-const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
-
-// const defaultAcAssemble: AcAssemble = {
-//   ulid: "",
-//   pilotName: "Jhon Doe",
-//   acName: "",
-//   acCardImageUrl: "",
-//   emblemImageUrl: "",
-//   acImageUrls: [""],
-//   parts: {
-//     weapons: {
-//       rArm: "Rifle",
-//       lArm: "Shield",
-//       rBack: "Missile",
-//       lBack: "Rifle",
-//     },
-//     frame: {
-//       head: "Head",
-//       core: "Core",
-//       arms: "Arms",
-//       legs: "Legs",
-//     },
-//   },
-//   description: "",
-//   remarks: "",
-// };
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function getAsm(ulid:string | string[] | undefined): Promise<AcAsmGetRes>  {
+  const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
   // とりあえず動作確認のためにundifinedも許容
   await sleep(1000);
   try {
@@ -72,20 +43,8 @@ interface AssembleDetailProps {
 // let acAsmGetRes: AcAsmGetRes | undefined;
 export default function AssembleDetail({ulid}: AssembleDetailProps) {
   console.log("AssembleDetail");
-  // クエリパラメータからULIDを取得 
-  // const router = useRouter();
-  // let ulid = router.query.ulid;
-  // ulidをstring型のみにしたい
   console.log(ulid);
-  // if (typeof ulid !== "string") {
-  //   // ulidがstring型でない場合、空文字列を設定します。
-  //   // このやり方が正しいのかはわからないけど，とりあえずこれで対処
-  //   ulid = "";
-  // }
-  
-  // if (acAsmGetRes === undefined) {
-  //   throw getAsm(ulid).then((data) => (acAsmGetRes = data));
-  // }
+
   const acAsmGetRes = useData1(ulid);
 
   return (

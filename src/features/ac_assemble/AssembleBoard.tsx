@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AcAsmListRes, AcAssemble } from "../../../share/assemble_type";
-import { useEffect, useState } from "react";
 
 interface AssembleCardProps {
   ulid: string, // UUIDもしくはULIDで一意なIDを付与
@@ -10,10 +9,6 @@ interface AssembleCardProps {
   acCardImageUrl: string;
   emblemImageUrl: string;
 }
-
-// type AssembleCardProps = AcAssemble;
-
-
 
 function AssembleCard({ ac }: { ac: AssembleCardProps }) {
 
@@ -41,102 +36,6 @@ function AssembleCard({ ac }: { ac: AssembleCardProps }) {
   );
 }
 
-
-// const acData: AssembleCardProps[] = [
-//   {
-//     uuid: "test1",
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test2",
-//     acPilotName: "Jane Smith",
-//     acName: "Iron Guardian",
-//     acImageUrl: "/ac/iron.jpg",
-//     emblemImageUrl: "/ac/steel.jpg",
-//   },
-//   {
-//     uuid: "test3",
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test4",
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   {
-//     uuid: "test1",
-
-//     acPilotName: "John Doe",
-//     acName: "Armored Steel Borne",
-//     acImageUrl: "/ac/ac.jpg",
-//     emblemImageUrl: "/ac/rusty.jpg",
-//   },
-//   // Add more AC data objects as needed
-// ];
-
 function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCardProps {
   // ここでacAssembleをAcAsmCardPropsに変換します。
   const re: AssembleCardProps = {
@@ -150,10 +49,11 @@ function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCard
 }
 
 
-const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function listAsm(): Promise<AcAsmListRes>  {
+  const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
+
   const res = await fetch(`${ASSEMBLE_LIST_URL}`);
   console.log(res);
   const data = await res.json();
@@ -162,16 +62,9 @@ async function listAsm(): Promise<AcAsmListRes>  {
 
 let acAsmList: AcAsmListRes;
 export default function AssembleBoard() {
-  // const [acAsmList, setAcAsm] = useState<AcAsmListRes | undefined>(undefined);
-  // if (!acAsmList) {
-  //   throw listAsm().then((data) => (setAcAsm(data)));
-  // }
   if (!acAsmList) {
     throw listAsm().then((data) => (acAsmList = data));
   }
-  // useEffect(() => {
-  //   listAsm().then((data) => setAcAsm(data));
-  // }, []);
 
   const asmCardProps = acAsmList.acAssembles.map((acAsm) => convertAcAssembleToAcAsmCardProps(acAsm));
 
@@ -188,3 +81,4 @@ export default function AssembleBoard() {
     </div>
   );
 }
+
