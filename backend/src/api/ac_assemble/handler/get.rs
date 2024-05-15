@@ -1,5 +1,5 @@
 use http::StatusCode;
-use share::model::assemble::{AcAsmGetReq, AcAsmGetRes};
+use share::model::assemble_reqres::{AcAsmGetReq, AcAsmGetRes};
 
 use crate::api::ac_assemble::dummy_data;
 

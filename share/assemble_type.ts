@@ -48,3 +48,7 @@ export interface AcAsmListRes {
 	acAssembles: AcAssemble[];
 }
 
+export interface AcAsmUpdateReq {
+	acAssemble: AcAssemble;
+}
+

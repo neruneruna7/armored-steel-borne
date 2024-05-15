@@ -1,5 +1,5 @@
 use axum::{routing::get, Json, Router};
-use share::model::assemble::*;
+use share::model::{assemble_core::*, assemble_reqres::*};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
