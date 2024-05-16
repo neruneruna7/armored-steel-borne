@@ -13,7 +13,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function getAsm(ulid: string | string[] | undefined): Promise<AcAsmGetRes> {
   const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
   // とりあえず動作確認のためにundifinedも許容
-  await sleep(1000);
+  // await sleep(1000);
   try {
     const res = await fetch(`${ASSEMBLE_URL}${ulid}`);
     console.log(res);
