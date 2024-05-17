@@ -8,7 +8,7 @@ use axum::{extract::Query, response::IntoResponse, Json};
 
 #[utoipa::path(
 get,
-path = "/asm",
+path = "/asm/list",
 params(AcAsmListReq),
 responses(
     (status = 200, description = "OK", body = AcAsmListRes),
