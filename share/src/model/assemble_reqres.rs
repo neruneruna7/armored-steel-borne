@@ -6,48 +6,8 @@ use ulid::Ulid;
 use utoipa::IntoParams;
 use utoipa::ToSchema;
 
-#[typeshare]
-#[derive(Debug, Clone, Serialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct Weapons {
-    pub r_arm: String,
-    pub l_arm: String,
-    pub r_back: String,
-    pub l_back: String,
-}
-
-#[typeshare]
-#[derive(Debug, Clone, Serialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct Frame {
-    pub head: String,
-    pub core: String,
-    pub arms: String,
-    pub legs: String,
-}
-
-#[typeshare]
-#[derive(Debug, Clone, Serialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct Parts {
-    pub weapons: Weapons,
-    pub frame: Frame,
-}
-
-#[typeshare]
-#[derive(Debug, Clone, Serialize, ToSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct AcAssemble {
-    pub ulid: Ulid,
-    pub pilot_name: String,
-    pub ac_name: String,
-    pub ac_card_image_url: String,
-    pub emblem_image_url: String,
-    pub ac_image_urls: Vec<String>,
-    pub parts: Parts,
-    pub description: String,
-    pub remarks: String,
-}
+use super::assemble_core::AcAssemble;
+use super::assemble_core::AcAssembleNonUlid;
 
 #[typeshare]
 // #[derive(Deserialize, ToSchema)]
@@ -86,4 +46,24 @@ impl Default for AcAsmListReq {
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmListRes {
     pub ac_assembles: Vec<AcAssemble>,
+}
+
+
+#[typeshare]
+#[derive(Debug, Clone, Deserialize, IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmUpdateReq {
+    pub ac_assemble: AcAssemble,
+}
+
+// #[typeshare]
+// #[derive(Debug, Clone, Serialize, IntoParams)]
+// #[serde(rename_all = "camelCase")]
+// pub struct AcAsmUpdateRes;
+
+#[typeshare]
+#[derive(Debug, Clone, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmPostReq {
+    pub ac_assemble: AcAssembleNonUlid,
 }

@@ -12,6 +12,8 @@ use time::Duration;
 
 use crate::AppState;
 
+const COOKIE_NAME: &str = "login_assemble_sessionid";
+
 #[derive(Deserialize)]
 pub struct RegisterDetails {
     name: String,
@@ -73,7 +75,7 @@ pub async fn login(
                 .await
                 .expect("Couldn't insert session :(");
 
-            let cookie = Cookie::build(("foo", session_id))
+            let cookie = Cookie::build((COOKIE_NAME, session_id))
                 .secure(!cfg!(debug_assertions)) // Only send the cookie over HTTPS in production
                 .same_site(SameSite::Strict)
                 .http_only(true)
@@ -101,7 +103,7 @@ pub async fn logout(
         .execute(&state.postgres);
 
     match query.await {
-        Ok(_) => Ok(jar.remove(Cookie::from("foo"))),
+        Ok(_) => Ok(jar.remove(Cookie::from(COOKIE_NAME))),
         Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
     }
 }
@@ -112,7 +114,7 @@ pub async fn validate_session(
     request: Request,
     next: Next,
 ) -> (PrivateCookieJar, Response) {
-    let Some(cookie) = jar.get("foo").map(|cookie| cookie.value().to_owned()) else {
+    let Some(cookie) = jar.get(COOKIE_NAME).map(|cookie| cookie.value().to_owned()) else {
         println!("Couldn't find a cookie in the jar");
         return (
             jar,

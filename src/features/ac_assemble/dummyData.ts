@@ -1,5 +1,7 @@
 // フロントのみでの動作確認の際などに再び使うかもしれないので，ダミーデータの残骸を置いておく
 
+import { AcAsmPostReq, AcAssembleNonUlid } from "../../../share/assemble_type";
+
 // const acData: AssembleCardProps[] = [
 //   {
 //     uuid: "test1",
@@ -120,3 +122,32 @@
 //   description: "",
 //   remarks: "",
 // };
+
+const dummyAcAssembleNonUlid: AcAssembleNonUlid = {
+    pilotName: "Dummy Pilot",
+    acName: "Dummy AC",
+    acCardImageUrl: "http://example.com/dummy.jpg",
+    emblemImageUrl: "http://example.com/emblem.jpg",
+    acImageUrls: ["http://example.com/ac1.jpg", "http://example.com/ac2.jpg"],
+    parts: {
+        weapons: 
+        {
+            rArm: "",
+            lArm: "",
+            rBack: "",
+            lBack: ""
+        },
+        frame: {
+            head: "",
+            core: "",
+            arms: "",
+            legs: ""
+        }
+    },
+    description: "This is a dummy AC.",
+    remarks: "No remarks."
+};
+
+export const dummyAcAsmPostReq: AcAsmPostReq = {
+    acAssemble: dummyAcAssembleNonUlid
+};

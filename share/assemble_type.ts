@@ -35,6 +35,17 @@ export interface AcAssemble {
 	remarks: string;
 }
 
+export interface AcAssembleNonUlid {
+	pilotName: string;
+	acName: string;
+	acCardImageUrl: string;
+	emblemImageUrl: string;
+	acImageUrls: string[];
+	parts: Parts;
+	description: string;
+	remarks: string;
+}
+
 export interface AcAsmGetRes {
 	acAssemble: AcAssemble;
 }
@@ -46,5 +57,13 @@ export interface AcAsmListReq {
 
 export interface AcAsmListRes {
 	acAssembles: AcAssemble[];
+}
+
+export interface AcAsmUpdateReq {
+	acAssemble: AcAssemble;
+}
+
+export interface AcAsmPostReq {
+	acAssemble: AcAssembleNonUlid;
 }
 

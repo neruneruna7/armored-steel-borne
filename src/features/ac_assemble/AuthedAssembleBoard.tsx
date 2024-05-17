@@ -10,13 +10,12 @@ interface AssembleCardProps {
   emblemImageUrl: string;
 }
 
-function AssembleCard({ ac }: { ac: AssembleCardProps }) {
+function AuthedAssembleCard({ ac }: { ac: AssembleCardProps }) {
 
   return (
     // いい感じのホバー時のスタイルがわからん
     <Link href={{
-      pathname: `/assembledetail/${ac.ulid}`,
-      // query: { ulid: ac.ulid }
+      pathname: `/asmdashboard/${ac.ulid}`,
     }} className="hover:mix-blend-luminosity hover:bg-gray-600" >
       <div className="border-4 w-80 h-72 relative">
         <div className="flex h-auto border-2">
@@ -63,8 +62,7 @@ async function listAsm(): Promise<AcAsmListRes> {
 
 let acAsmList: AcAsmListRes;
 export default function AssembleBoard() {
-  console.log("AssembleBoard")
-
+  console.log("AuthedAssembleBoard")
   if (!acAsmList) {
     throw listAsm().then((data) => (acAsmList = data));
   }
@@ -72,7 +70,7 @@ export default function AssembleBoard() {
   const asmCardProps = acAsmList.acAssembles.map((acAsm) => convertAcAssembleToAcAsmCardProps(acAsm));
 
   const acCards = asmCardProps.map((acAsm, index) => (
-    <AssembleCard key={index} ac={acAsm} />
+    <AuthedAssembleCard key={index} ac={acAsm} />
   ));
 
   return (
