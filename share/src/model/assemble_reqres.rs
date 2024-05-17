@@ -7,6 +7,7 @@ use utoipa::IntoParams;
 use utoipa::ToSchema;
 
 use super::assemble_core::AcAssemble;
+use super::assemble_core::AcAssembleNonUlid;
 
 #[typeshare]
 // #[derive(Deserialize, ToSchema)]
@@ -59,3 +60,10 @@ pub struct AcAsmUpdateReq {
 // #[derive(Debug, Clone, Serialize, IntoParams)]
 // #[serde(rename_all = "camelCase")]
 // pub struct AcAsmUpdateRes;
+
+#[typeshare]
+#[derive(Debug, Clone, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmPostReq {
+    pub ac_assemble: AcAssembleNonUlid,
+}

@@ -1,5 +1,6 @@
 use http::StatusCode;
 use share::model::assemble_reqres::{AcAsmGetReq, AcAsmGetRes};
+use tracing::info;
 
 use crate::api::ac_assemble::dummy_data;
 
@@ -18,6 +19,7 @@ responses(
     (status = 200, description = "OK", body = AcAsmGetRes),
 ),
 )]
+#[tracing::instrument]
 pub async fn get_ac_asm(Path(req): Path<AcAsmGetReq>) -> impl IntoResponse {
     // ここでAcAssembleのダミーデータを作成します。
     let ac_assemble = dummy_data::dumy_assembles();
@@ -28,6 +30,8 @@ pub async fn get_ac_asm(Path(req): Path<AcAsmGetReq>) -> impl IntoResponse {
         .into_iter()
         .find(|ac_assemble| ac_assemble.ulid == req)
         .unwrap();
+
+    info!("ac_assemble name: {:?}", ac_assemble.ac_name);
 
     (StatusCode::OK, Json(AcAsmGetRes { ac_assemble }))
 }

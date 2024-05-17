@@ -46,3 +46,16 @@ pub struct AcAssemble {
     pub remarks: String,
 }
 
+#[typeshare]
+#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAssembleNonUlid {
+    pub pilot_name: String,
+    pub ac_name: String,
+    pub ac_card_image_url: String,
+    pub emblem_image_url: String,
+    pub ac_image_urls: Vec<String>,
+    pub parts: Parts,
+    pub description: String,
+    pub remarks: String,
+}
