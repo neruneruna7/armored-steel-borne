@@ -14,7 +14,7 @@ pub struct Weapons {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Frame {
     pub head: String,
@@ -24,7 +24,7 @@ pub struct Frame {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
@@ -32,10 +32,10 @@ pub struct Parts {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
-    pub ulid: Ulid,
+    pub id: i32,
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,
@@ -47,9 +47,9 @@ pub struct AcAssemble {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct AcAssembleNonUlid {
+pub struct AcAssembleNonId {
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,

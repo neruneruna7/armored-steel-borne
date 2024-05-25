@@ -1,5 +1,5 @@
-use axum::Router;
 use axum::extract::FromRef;
+use axum::Router;
 use axum_extra::extract::cookie::Key;
 use sqlx::PgPool;
 use tower_http::services::{ServeDir, ServeFile};
@@ -11,6 +11,7 @@ mod dashboard;
 mod deals;
 mod mail;
 mod payments;
+mod repository;
 mod router;
 
 use router::create_api_router;

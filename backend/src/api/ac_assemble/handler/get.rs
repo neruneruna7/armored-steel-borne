@@ -4,11 +4,7 @@ use tracing::info;
 
 use crate::api::ac_assemble::dummy_data;
 
-use axum::{
-    extract::Path,
-    response::IntoResponse,
-    Json,
-};
+use axum::{extract::Path, response::IntoResponse, Json};
 
 #[utoipa::path(
 get,
@@ -28,7 +24,7 @@ pub async fn get_ac_asm(Path(req): Path<AcAsmGetReq>) -> impl IntoResponse {
     // ひとまずエラーハンドリングはせずに動作確認
     let ac_assemble = ac_assemble
         .into_iter()
-        .find(|ac_assemble| ac_assemble.ulid == req)
+        .find(|ac_assemble| ac_assemble.id == req)
         .unwrap();
 
     info!("ac_assemble name: {:?}", ac_assemble.ac_name);
