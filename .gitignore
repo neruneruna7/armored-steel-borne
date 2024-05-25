@@ -41,3 +41,6 @@ Secrets*.toml
 
 # cargo
 .cargo/
+
+# env
+.env

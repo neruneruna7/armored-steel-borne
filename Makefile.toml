@@ -9,3 +9,7 @@ args = [
     "--lang=typescript",
     "--output-file=./share/assemble_type.ts"
 ]
+
+[tasks.sqlx-prepare]
+command = "sqlx"
+args = ["prepare", "--workspace"]
