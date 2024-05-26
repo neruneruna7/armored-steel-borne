@@ -399,6 +399,7 @@ mod tests {
 
         let id = repo.create(create_asm.clone(), user_id).await.unwrap();
         let read_asm = repo.read(id).await.unwrap();
+        repo.delete(id).await.unwrap();
 
         assert_eq!(create_asm, read_asm.into());
     }
