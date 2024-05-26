@@ -337,6 +337,61 @@ impl Ac6AssembliesRepo {
         Ok(asm.into_iter().map(|a| a.into()).collect())
     }
 
+    pub async fn update(&self, asm: AcAssemble) -> Result<()> {
+        sqlx::query!(
+            r#"
+            UPDATE ac6_assemblies
+            SET
+                pilot_name = $1,
+                ac_name = $2,
+                description = $3,
+                remarks = $4,
+                ac_card_image_url = $5,
+                emblem_image_url = $6,
+                ac_image_urls = $7,
+                l_arm_name = $8,
+                r_arm_name = $9,
+                l_back_name = $10,
+                r_back_name = $11,
+                head_name = $12,
+                core_name = $13,
+                arms_name = $14,
+                legs_name = $15,
+                boost_name = $16,
+                fcs_name = $17,
+                generator_name = $18,
+                expansion_name = $19,
+                user_id = $20
+            WHERE id = $21
+            "#,
+            asm.pilot_name,
+            asm.ac_name,
+            asm.description,
+            asm.remarks,
+            asm.ac_card_image_url,
+            asm.emblem_image_url,
+            &asm.ac_image_urls,
+            asm.parts.weapons.l_arm,
+            asm.parts.weapons.r_arm,
+            asm.parts.weapons.l_back,
+            asm.parts.weapons.r_back,
+            asm.parts.frame.head,
+            asm.parts.frame.core,
+            asm.parts.frame.arms,
+            asm.parts.frame.legs,
+            // 型にまだないので，仮で入れている
+            "Booster Type A",
+            "FCS Type A",
+            "Generator Type A",
+            Some("Shield".to_owned()),
+            1,
+            asm.id
+        )
+        .execute(&self.db)
+        .await?;
+        Ok(())
+    }
+
 
     pub async fn delete(&self, id: i32) -> Result<()> {
         sqlx::query!(
@@ -459,6 +514,74 @@ mod tests {
             println!("{:?}", a);
         });
     }
+
+    #[tokio::test]
+    async fn test_update() {
+        dotenv().ok();
+
+        let db = PgPoolOptions::new()
+            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+            .await
+            .unwrap();
+        let repo = Ac6AssembliesRepo::new(db);
+
+        let asm = AcAssembleNonId {
+            pilot_name: "test pilot".to_owned(),
+            ac_name: "test ac ".to_owned(),
+            description: "test description".to_owned(),
+            remarks: "test remark".to_owned(),
+            ac_card_image_url: "test_url".to_owned(),
+            emblem_image_url: "test_url".to_owned(),
+            ac_image_urls: vec!["test_url".to_owned()],
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    r_arm: "Laser Blade".to_owned(),
+                    l_arm: "Laser Blade".to_owned(),
+                    r_back: "Laser Blade".to_owned(),
+                    l_back: "Laser Blade".to_owned(),
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: "Head Type A".to_owned(),
+                    core: "Core Type A".to_owned(),
+                    arms: "Arms Type A".to_owned(),
+                    legs: "Legs Type A".to_owned(),
+                },
+            },
+        };
+        let user_id = 1;
+        let id = repo.create(asm, user_id).await.unwrap();
+
+        let asm = AcAssemble {
+            id,
+            pilot_name: "test2 pilot".to_owned(),
+            ac_name: "test2 ac ".to_owned(),
+            description: "test2 description".to_owned(),
+            remarks: "test2 remark".to_owned(),
+            ac_card_image_url: "test_url2".to_owned(),
+            emblem_image_url: "test_url2".to_owned(),
+            ac_image_urls: vec!["test_url2".to_owned()],
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    r_arm: "Laser Blade".to_owned(),
+                    l_arm: "Laser Blade".to_owned(),
+                    r_back: "Laser Blade".to_owned(),
+                    l_back: "Laser Blade".to_owned(),
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: "Head Type B".to_owned(),
+                    core: "Core Type B".to_owned(),
+                    arms: "Arms Type B".to_owned(),
+                    legs: "Legs Type B".to_owned(),
+                },
+            },
+        };
+        repo.update(asm.clone()).await.unwrap();
+        let read_asm = repo.read(id).await.unwrap();
+        repo.delete(id).await.unwrap();
+
+        assert_eq!(asm, read_asm);
+    }
+
 
     #[tokio::test]
     async fn test_delete() {
