@@ -297,6 +297,47 @@ impl Ac6AssembliesRepo {
         Ok(asm.into())
     }
 
+    // 複数のレコードを取得する
+    pub async fn read_list(&self, prev_id: i32, limit_size: i64) -> Result<Vec<AcAssemble>> {
+        let asm = sqlx::query_as!(
+            Ac6AssemblyRead,
+            r#"
+            SELECT
+                id,
+                pilot_name,
+                ac_name,
+                description,
+                remarks,
+                ac_card_image_url,
+                emblem_image_url,
+                ac_image_urls,
+                l_arm_name,
+                r_arm_name,
+                l_back_name,
+                r_back_name,
+                head_name,
+                core_name,
+                arms_name,
+                legs_name,
+                boost_name,
+                fcs_name,
+                generator_name,
+                expansion_name,
+                user_id
+            FROM ac6_assemblies
+            WHERE id >= $1
+            ORDER BY id DESC
+            LIMIT $2
+            "#,
+            prev_id,
+            limit_size
+        )
+        .fetch_all(&self.db)
+        .await?;
+        Ok(asm.into_iter().map(|a| a.into()).collect())
+    }
+
+
     pub async fn delete(&self, id: i32) -> Result<()> {
         sqlx::query!(
             r#"
@@ -399,6 +440,24 @@ mod tests {
         repo.delete(id).await.unwrap();
 
         assert_eq!(create_asm, read_asm.into());
+    }
+
+    #[tokio::test]
+    async fn test_read_list() {
+        dotenv().ok();
+
+        let db = PgPoolOptions::new()
+            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+            .await
+            .unwrap();
+
+        let repo = Ac6AssembliesRepo::new(db);
+
+        let read_asm = repo.read_list(0, 10).await.unwrap();
+
+        read_asm.iter().for_each(|a| {
+            println!("{:?}", a);
+        });
     }
 
     #[tokio::test]
