@@ -4,7 +4,7 @@ use ulid::Ulid;
 use utoipa::ToSchema;
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Weapons {
     pub r_arm: String,
@@ -14,7 +14,7 @@ pub struct Weapons {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Frame {
     pub head: String,
@@ -24,7 +24,7 @@ pub struct Frame {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq,  Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
@@ -32,7 +32,7 @@ pub struct Parts {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
     pub id: i32,
@@ -47,7 +47,7 @@ pub struct AcAssemble {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq ,Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssembleNonId {
     pub pilot_name: String,
