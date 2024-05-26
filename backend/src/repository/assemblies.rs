@@ -1,6 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
-use share::model::assemble_core::AcAssembleNonId;
+use share::model::assemble_core::{AcAssemble, AcAssembleNonId};
 use sqlx::types::chrono::{DateTime, Utc};
 use sqlx::types::Json;
 use sqlx::FromRow;
@@ -28,8 +28,6 @@ pub struct Ac6AssemblyRead {
     pub fcs_name: String,
     pub generator_name: String,
     pub expansion_name: Option<String>,
-    pub created_at: DateTime<Utc>,
-    pub updated_at: DateTime<Utc>,
     pub user_id: i32,
 }
 
@@ -135,14 +133,23 @@ pub struct Ac6AssembliesRepo {
     db: PgPool,
 }
 
+/// 新しくレコードを挿入する際，RETURNINGでidを取得するための構造体
+/// query_as!マクロが構造体しかとらない仕様のため，こうやって構造体を定義している
+struct ReturnCreate {
+    id: i32,
+}
+
 impl Ac6AssembliesRepo {
     pub fn new(db: PgPool) -> Self {
         Self { db }
     }
 
-    pub async fn create(&self, asm: AcAssembleNonId, user_id: i32) -> Result<()> {
+
+
+    pub async fn create(&self, asm: AcAssembleNonId, user_id: i32) -> Result<i32> {
         let asm = Ac6AssemblyInsert::from_acasm_nonid(asm, user_id);
-        sqlx::query!(
+        let r = sqlx::query_as!(
+            ReturnCreate,
             r#"
             INSERT INTO ac6_assemblies (
                 pilot_name,
@@ -170,6 +177,7 @@ impl Ac6AssembliesRepo {
                 $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
                 $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
             )
+            RETURNING id
             "#,
             asm.pilot_name,
             asm.ac_name,
@@ -192,9 +200,46 @@ impl Ac6AssembliesRepo {
             asm.expansion_name,
             asm.user_id
         )
-        .execute(&self.db)
+        .fetch_one(&self.db)
         .await?;
-        Ok(())
+
+        Ok(r.id)
+    }
+
+    pub async fn read(&self, id: i32) -> Result<Ac6AssemblyRead> {
+        let asm = sqlx::query_as!(
+            Ac6AssemblyRead,
+            r#"
+            SELECT
+                id,
+                pilot_name,
+                ac_name,
+                description,
+                remarks,
+                ac_card_image_url,
+                emblem_image_url,
+                ac_image_urls,
+                l_arm_name,
+                r_arm_name,
+                l_back_name,
+                r_back_name,
+                head_name,
+                core_name,
+                arms_name,
+                legs_name,
+                boost_name,
+                fcs_name,
+                generator_name,
+                expansion_name,
+                user_id
+            FROM ac6_assemblies
+            WHERE id = $1
+            "#,
+            id
+        )
+        .fetch_one(&self.db)
+        .await?;
+        Ok(asm)
     }
 }
 
@@ -241,6 +286,7 @@ mod tests {
             },
         };
         let user_id = 1;
-        repo.create(asm, user_id).await.unwrap();
+        let id = repo.create(asm, user_id).await.unwrap();
+        panic!("id: {}", id);
     }
 }
