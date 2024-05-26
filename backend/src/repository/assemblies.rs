@@ -1,7 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
 use share::model::assemble_core::{AcAssemble, AcAssembleNonId, Frame, Inner, Parts, Weapons};
-use sqlx::types::chrono::{DateTime, Utc};
 use sqlx::types::Json;
 use sqlx::FromRow;
 use sqlx::PgPool;
@@ -31,72 +30,72 @@ struct Ac6AssemblyRead {
     user_id: i32,
 }
 
-impl Into<AcAssemble> for Ac6AssemblyRead {
-    fn into(self) -> AcAssemble {
+impl From<Ac6AssemblyRead> for AcAssemble {
+    fn from(val: Ac6AssemblyRead) -> Self {
         AcAssemble {
-            id: self.id,
-            user_id: self.user_id,
-            pilot_name: self.pilot_name,
-            ac_name: self.ac_name,
-            remarks: self.remarks,
-            description: self.description,
-            ac_card_image_url: self.ac_card_image_url,
-            emblem_image_url: self.emblem_image_url,
-            ac_image_urls: self.ac_image_urls.to_vec(),
+            id: val.id,
+            user_id: val.user_id,
+            pilot_name: val.pilot_name,
+            ac_name: val.ac_name,
+            remarks: val.remarks,
+            description: val.description,
+            ac_card_image_url: val.ac_card_image_url,
+            emblem_image_url: val.emblem_image_url,
+            ac_image_urls: val.ac_image_urls.to_vec(),
             parts: Parts {
                 weapons: Weapons {
-                    l_arm: self.l_arm_name,
-                    r_arm: self.r_arm_name,
-                    l_back: self.l_back_name,
-                    r_back: self.r_back_name,
+                    l_arm: val.l_arm_name,
+                    r_arm: val.r_arm_name,
+                    l_back: val.l_back_name,
+                    r_back: val.r_back_name,
                 },
                 frame: Frame {
-                    head: self.head_name,
-                    core: self.core_name,
-                    arms: self.arms_name,
-                    legs: self.legs_name,
+                    head: val.head_name,
+                    core: val.core_name,
+                    arms: val.arms_name,
+                    legs: val.legs_name,
                 },
                 inner: Inner {
-                    booster: self.boost_name,
-                    fcs: self.fcs_name,
-                    generator: self.generator_name,
+                    booster: val.boost_name,
+                    fcs: val.fcs_name,
+                    generator: val.generator_name,
                 },
-                expansion: self.expansion_name,
+                expansion: val.expansion_name,
             },
         }
     }
 }
 
-impl Into<AcAssembleNonId> for Ac6AssemblyRead {
-    fn into(self) -> AcAssembleNonId {
+impl From<Ac6AssemblyRead> for AcAssembleNonId {
+    fn from(val: Ac6AssemblyRead) -> Self {
         AcAssembleNonId {
-            user_id: self.user_id,
-            pilot_name: self.pilot_name,
-            ac_name: self.ac_name,
-            remarks: self.remarks,
-            description: self.description,
-            ac_card_image_url: self.ac_card_image_url,
-            emblem_image_url: self.emblem_image_url,
-            ac_image_urls: self.ac_image_urls.to_vec(),
+            user_id: val.user_id,
+            pilot_name: val.pilot_name,
+            ac_name: val.ac_name,
+            remarks: val.remarks,
+            description: val.description,
+            ac_card_image_url: val.ac_card_image_url,
+            emblem_image_url: val.emblem_image_url,
+            ac_image_urls: val.ac_image_urls.to_vec(),
             parts: Parts {
                 weapons: Weapons {
-                    l_arm: self.l_arm_name,
-                    r_arm: self.r_arm_name,
-                    l_back: self.l_back_name,
-                    r_back: self.r_back_name,
+                    l_arm: val.l_arm_name,
+                    r_arm: val.r_arm_name,
+                    l_back: val.l_back_name,
+                    r_back: val.r_back_name,
                 },
                 frame: Frame {
-                    head: self.head_name,
-                    core: self.core_name,
-                    arms: self.arms_name,
-                    legs: self.legs_name,
+                    head: val.head_name,
+                    core: val.core_name,
+                    arms: val.arms_name,
+                    legs: val.legs_name,
                 },
                 inner: Inner {
-                    booster: self.boost_name,
-                    fcs: self.fcs_name,
-                    generator: self.generator_name,
+                    booster: val.boost_name,
+                    fcs: val.fcs_name,
+                    generator: val.generator_name,
                 },
-                expansion: self.expansion_name,
+                expansion: val.expansion_name,
             },
         }
     }

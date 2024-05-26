@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use ulid::Ulid;
 use utoipa::ToSchema;
 
 #[typeshare]
@@ -58,18 +57,18 @@ pub struct AcAssemble {
     pub remarks: String,
 }
 
-impl Into<AcAssembleNonId> for AcAssemble {
-    fn into(self) -> AcAssembleNonId {
+impl From<AcAssemble> for AcAssembleNonId {
+    fn from(val: AcAssemble) -> Self {
         AcAssembleNonId {
-            user_id: self.user_id,
-            pilot_name: self.pilot_name,
-            ac_name: self.ac_name,
-            ac_card_image_url: self.ac_card_image_url,
-            emblem_image_url: self.emblem_image_url,
-            ac_image_urls: self.ac_image_urls,
-            parts: self.parts,
-            description: self.description,
-            remarks: self.remarks,
+            user_id: val.user_id,
+            pilot_name: val.pilot_name,
+            ac_name: val.ac_name,
+            ac_card_image_url: val.ac_card_image_url,
+            emblem_image_url: val.emblem_image_url,
+            ac_image_urls: val.ac_image_urls,
+            parts: val.parts,
+            description: val.description,
+            remarks: val.remarks,
         }
     }
 }

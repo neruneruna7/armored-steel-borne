@@ -1,5 +1,4 @@
 use share::model::assemble_core::{AcAssemble, Frame, Inner, Parts, Weapons};
-use ulid::Ulid;
 
 pub fn dumy_assembles() -> Vec<AcAssemble> {
     let ac_assemles = [
