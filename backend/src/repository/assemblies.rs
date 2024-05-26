@@ -201,8 +201,6 @@ impl Ac6AssembliesRepo {
         Self { db }
     }
 
-
-
     pub async fn create(&self, asm: AcAssembleNonId, user_id: i32) -> Result<i32> {
         let asm = Ac6AssemblyInsert::from_acasm_nonid(asm, user_id);
         let r = sqlx::query_as!(
@@ -313,13 +311,12 @@ impl Ac6AssembliesRepo {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use dotenvy::dotenv;
     use share::model::assemble_core::AcAssembleNonId;
     use sqlx::postgres::PgPoolOptions;
-    use dotenvy::dotenv;
     use std::env;
 
     #[tokio::test]
@@ -328,9 +325,9 @@ mod tests {
         dotenv().ok();
 
         let db = PgPoolOptions::new()
-        .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-        .await
-        .unwrap();
+            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+            .await
+            .unwrap();
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
@@ -366,9 +363,9 @@ mod tests {
         dotenv().ok();
 
         let db = PgPoolOptions::new()
-        .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-        .await
-        .unwrap();
+            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+            .await
+            .unwrap();
 
         let create_asm = AcAssembleNonId {
             pilot_name: "test pilot".to_owned(),
@@ -404,14 +401,14 @@ mod tests {
         assert_eq!(create_asm, read_asm.into());
     }
 
-    #[tokio::test]    
+    #[tokio::test]
     async fn test_delete() {
         dotenv().ok();
 
         let db = PgPoolOptions::new()
-        .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-        .await
-        .unwrap();
+            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+            .await
+            .unwrap();
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
@@ -442,12 +439,11 @@ mod tests {
         repo.delete(id).await.unwrap();
     }
 
-
     // テストデータを削除する
     // 関数の都合，テストデータを削除する際には，テストデータのidを指定する必要がある
     // createテストはdeleteの正常動作に依存し，deleteテストはcreateの正常動作に依存するため，両方壊れるとうまくテストできない
-    // createとdeleteが同時に不具合が起きた場合，この手動でidを指定するテストを使ってテストする 
-    // #[tokio::test]    
+    // createとdeleteが同時に不具合が起きた場合，この手動でidを指定するテストを使ってテストする
+    // #[tokio::test]
     // async fn test_delete_manual() {
     //     dotenv().ok();
 

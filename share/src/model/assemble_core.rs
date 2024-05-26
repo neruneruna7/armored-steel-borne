@@ -24,7 +24,7 @@ pub struct Frame {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, PartialEq, Eq,  Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
@@ -62,7 +62,7 @@ impl Into<AcAssembleNonId> for AcAssemble {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, PartialEq, Eq ,Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssembleNonId {
     pub pilot_name: String,
