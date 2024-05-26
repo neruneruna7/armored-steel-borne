@@ -7,28 +7,28 @@ use sqlx::FromRow;
 use sqlx::PgPool;
 
 #[derive(Debug, Deserialize, FromRow)]
-pub struct Ac6AssemblyRead {
-    pub id: i32,
-    pub pilot_name: String,
-    pub ac_name: String,
-    pub description: String,
-    pub remarks: String,
-    pub ac_card_image_url: String,
-    pub emblem_image_url: String,
-    pub ac_image_urls: Json<Vec<String>>,
-    pub l_arm_name: String,
-    pub r_arm_name: String,
-    pub l_back_name: String,
-    pub r_back_name: String,
-    pub head_name: String,
-    pub core_name: String,
-    pub arms_name: String,
-    pub legs_name: String,
-    pub boost_name: String,
-    pub fcs_name: String,
-    pub generator_name: String,
-    pub expansion_name: Option<String>,
-    pub user_id: i32,
+struct Ac6AssemblyRead {
+    id: i32,
+    pilot_name: String,
+    ac_name: String,
+    description: String,
+    remarks: String,
+    ac_card_image_url: String,
+    emblem_image_url: String,
+    ac_image_urls: Json<Vec<String>>,
+    l_arm_name: String,
+    r_arm_name: String,
+    l_back_name: String,
+    r_back_name: String,
+    head_name: String,
+    core_name: String,
+    arms_name: String,
+    legs_name: String,
+    boost_name: String,
+    fcs_name: String,
+    generator_name: String,
+    expansion_name: Option<String>,
+    user_id: i32,
 }
 
 impl Into<AcAssemble> for Ac6AssemblyRead {
@@ -89,31 +89,31 @@ impl Into<AcAssembleNonId> for Ac6AssemblyRead {
 }
 
 #[derive(Debug, Deserialize, FromRow)]
-pub struct Ac6AssemblyInsert {
-    pub pilot_name: String,
-    pub ac_name: String,
-    pub description: String,
-    pub remarks: String,
-    pub ac_card_image_url: String,
-    pub emblem_image_url: String,
-    pub ac_image_urls: Vec<String>,
-    pub l_arm_name: String,
-    pub r_arm_name: String,
-    pub l_back_name: String,
-    pub r_back_name: String,
-    pub head_name: String,
-    pub core_name: String,
-    pub arms_name: String,
-    pub legs_name: String,
-    pub boost_name: String,
-    pub fcs_name: String,
-    pub generator_name: String,
-    pub expansion_name: Option<String>,
-    pub user_id: i32,
+struct Ac6AssemblyInsert {
+    pilot_name: String,
+    ac_name: String,
+    description: String,
+    remarks: String,
+    ac_card_image_url: String,
+    emblem_image_url: String,
+    ac_image_urls: Vec<String>,
+    l_arm_name: String,
+    r_arm_name: String,
+    l_back_name: String,
+    r_back_name: String,
+    head_name: String,
+    core_name: String,
+    arms_name: String,
+    legs_name: String,
+    boost_name: String,
+    fcs_name: String,
+    generator_name: String,
+    expansion_name: Option<String>,
+    user_id: i32,
 }
 
 impl Ac6AssemblyInsert {
-    pub fn new(
+    fn new(
         pilot_name: String,
         ac_name: String,
         description: String,
@@ -160,7 +160,7 @@ impl Ac6AssemblyInsert {
     }
 
     // インナーパーツはまだ未実装
-    pub fn from_acasm_nonid(value: AcAssembleNonId, user_id: i32) -> Self {
+    fn from_acasm_nonid(value: AcAssembleNonId, user_id: i32) -> Self {
         Ac6AssemblyInsert::new(
             value.pilot_name,
             value.ac_name,
@@ -263,7 +263,7 @@ impl Ac6AssembliesRepo {
         Ok(r.id)
     }
 
-    pub async fn read(&self, id: i32) -> Result<Ac6AssemblyRead> {
+    pub async fn read(&self, id: i32) -> Result<AcAssemble> {
         let asm = sqlx::query_as!(
             Ac6AssemblyRead,
             r#"
@@ -296,7 +296,7 @@ impl Ac6AssembliesRepo {
         )
         .fetch_one(&self.db)
         .await?;
-        Ok(asm)
+        Ok(asm.into())
     }
 
     pub async fn delete(&self, id: i32) -> Result<()> {
