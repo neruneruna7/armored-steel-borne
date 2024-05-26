@@ -1,4 +1,4 @@
-use share::model::assemble_core::{AcAssemble, Frame, Parts, Weapons};
+use share::model::assemble_core::{AcAssemble, Frame, Inner, Parts, Weapons};
 use ulid::Ulid;
 
 pub fn dumy_assembles() -> Vec<AcAssemble> {
@@ -6,6 +6,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVEABC7SJRCCRKBQQR1E9GF").unwrap(),
             id: 1,
+            user_id: 1,
             pilot_name: "V.Ⅳ Rusty".to_string(),
             ac_name: "STEEL HAZE".to_string(),
             ac_card_image_url: "/ac/steel-haze.webp".to_string(),
@@ -29,6 +30,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 アーキバスグループ強化人間部隊 ヴェスパーの第4隊長
@@ -45,6 +52,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVEBSR8MRC2GTBK6DVHV2XR").unwrap(),
             id: 2,
+            user_id: 1,
             pilot_name: "G1 Michigan".to_string(),
             ac_name: "LIGER TAIL".to_string(),
             ac_card_image_url: "/ac/liger-tail.jpg".to_string(),
@@ -67,6 +75,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 ベイラムグループ専属AC部隊レッドガンの総長
@@ -83,6 +97,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVECA13MVR7E0DCMVZ5JGXD").unwrap(),
             id: 3,
+            user_id: 1,
             pilot_name: "Honest Brute".to_string(),
             ac_name: "MILK TOOTH".to_string(),
             ac_card_image_url: "/ac/milk-tooth.jpg".to_string(),
@@ -105,6 +120,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 ドーザー最大勢力 ジャンカーコヨーテスの頭目
@@ -122,6 +143,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVECT3C8Q3K690YXTW7AMKX").unwrap(),
             id: 4,
+            user_id: 1,
             pilot_name: "G4 Volta".to_string(),
             ac_name: "CANNON HEAD".to_string(),
             ac_card_image_url: "/ac/cannon-head.jpg".to_string(),
@@ -140,6 +162,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 ベイラムグループ専属AC部隊「レッドガン」の4番手
@@ -155,6 +183,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVED5KARDBR3WC6Q7H00T13").unwrap(),
             id: 5,
+            user_id: 1,
             pilot_name: "六文銭".to_string(),
             ac_name: "SHINOBI".to_string(),
             ac_card_image_url: "/ac/shinobi.jpg".to_string(),
@@ -173,6 +202,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 ルビコン解放戦線に身を寄せる流浪の独立傭兵
@@ -191,6 +226,7 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
         AcAssemble {
             // ulid: Ulid::from_string("01HXVEDKG7G7J4AWR98TPG4RFF").unwrap(),
             id: 6,
+            user_id: 1,
             pilot_name: "六文銭".to_string(),
             ac_name: "SHINOBI".to_string(),
             ac_card_image_url: "/ac/shinobi.jpg".to_string(),
@@ -209,6 +245,12 @@ pub fn dumy_assembles() -> Vec<AcAssemble> {
                     arms: "NACHTREIHER/46E".to_string(),
                     legs: "NACHTREIHER/42E".to_string(),
                 },
+                inner: Inner {
+                    booster: "ALULA/21E".to_string(),
+                    fcs: "FCS-G2/P05".to_string(),
+                    generator: "AG-T-005 HOKUSHI".to_string(),
+                },
+                expansion: Some("Shield".to_string()),
             },
             description: "
 ルビコン解放戦線に身を寄せる流浪の独立傭兵

@@ -26,9 +26,21 @@ pub struct Frame {
 #[typeshare]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
+pub struct Inner {
+    pub booster: String,
+    pub fcs: String,
+    pub generator: String,
+}
+
+
+#[typeshare]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
     pub frame: Frame,
+    pub inner: Inner,
+    pub expansion: Option<String>,
 }
 
 #[typeshare]
@@ -36,6 +48,7 @@ pub struct Parts {
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
     pub id: i32,
+    pub user_id: i32,
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,
@@ -49,6 +62,7 @@ pub struct AcAssemble {
 impl Into<AcAssembleNonId> for AcAssemble {
     fn into(self) -> AcAssembleNonId {
         AcAssembleNonId {
+            user_id: self.user_id,
             pilot_name: self.pilot_name,
             ac_name: self.ac_name,
             ac_card_image_url: self.ac_card_image_url,
@@ -65,6 +79,7 @@ impl Into<AcAssembleNonId> for AcAssemble {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssembleNonId {
+    pub user_id: i32,
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,

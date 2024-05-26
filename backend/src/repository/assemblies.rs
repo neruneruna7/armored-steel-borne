@@ -1,6 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
-use share::model::assemble_core::{AcAssemble, AcAssembleNonId};
+use share::model::assemble_core::{AcAssemble, AcAssembleNonId, Frame, Inner, Parts, Weapons};
 use sqlx::types::chrono::{DateTime, Utc};
 use sqlx::types::Json;
 use sqlx::FromRow;
@@ -35,6 +35,7 @@ impl Into<AcAssemble> for Ac6AssemblyRead {
     fn into(self) -> AcAssemble {
         AcAssemble {
             id: self.id,
+            user_id: self.user_id,
             pilot_name: self.pilot_name,
             ac_name: self.ac_name,
             remarks: self.remarks,
@@ -42,19 +43,25 @@ impl Into<AcAssemble> for Ac6AssemblyRead {
             ac_card_image_url: self.ac_card_image_url,
             emblem_image_url: self.emblem_image_url,
             ac_image_urls: self.ac_image_urls.to_vec(),
-            parts: share::model::assemble_core::Parts {
-                weapons: share::model::assemble_core::Weapons {
+            parts: Parts {
+                weapons: Weapons {
                     l_arm: self.l_arm_name,
                     r_arm: self.r_arm_name,
                     l_back: self.l_back_name,
                     r_back: self.r_back_name,
                 },
-                frame: share::model::assemble_core::Frame {
+                frame: Frame {
                     head: self.head_name,
                     core: self.core_name,
                     arms: self.arms_name,
                     legs: self.legs_name,
                 },
+                inner: Inner {
+                    booster: self.boost_name,
+                    fcs: self.fcs_name,
+                    generator: self.generator_name,
+                },
+                expansion: self.expansion_name,
             },
         }
     }
@@ -63,6 +70,7 @@ impl Into<AcAssemble> for Ac6AssemblyRead {
 impl Into<AcAssembleNonId> for Ac6AssemblyRead {
     fn into(self) -> AcAssembleNonId {
         AcAssembleNonId {
+            user_id: self.user_id,
             pilot_name: self.pilot_name,
             ac_name: self.ac_name,
             remarks: self.remarks,
@@ -70,19 +78,25 @@ impl Into<AcAssembleNonId> for Ac6AssemblyRead {
             ac_card_image_url: self.ac_card_image_url,
             emblem_image_url: self.emblem_image_url,
             ac_image_urls: self.ac_image_urls.to_vec(),
-            parts: share::model::assemble_core::Parts {
-                weapons: share::model::assemble_core::Weapons {
+            parts: Parts {
+                weapons: Weapons {
                     l_arm: self.l_arm_name,
                     r_arm: self.r_arm_name,
                     l_back: self.l_back_name,
                     r_back: self.r_back_name,
                 },
-                frame: share::model::assemble_core::Frame {
+                frame: Frame {
                     head: self.head_name,
                     core: self.core_name,
                     arms: self.arms_name,
                     legs: self.legs_name,
                 },
+                inner: Inner {
+                    booster: self.boost_name,
+                    fcs: self.fcs_name,
+                    generator: self.generator_name,
+                },
+                expansion: self.expansion_name,
             },
         }
     }
@@ -380,9 +394,9 @@ impl Ac6AssembliesRepo {
             asm.parts.frame.arms,
             asm.parts.frame.legs,
             // 型にまだないので，仮で入れている
-            "Booster Type A",
-            "FCS Type A",
-            "Generator Type A",
+            asm.parts.inner.booster,
+            asm.parts.inner.fcs,
+            asm.parts.inner.generator,
             Some("Shield".to_owned()),
             1,
             asm.id
@@ -427,6 +441,7 @@ mod tests {
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
+            user_id: 1,
             pilot_name: "test pilot".to_owned(),
             ac_name: "test ac ".to_owned(),
             description: "test description".to_owned(),
@@ -434,19 +449,25 @@ mod tests {
             ac_card_image_url: "test_url".to_owned(),
             emblem_image_url: "test_url".to_owned(),
             ac_image_urls: vec!["test_url".to_owned()],
-            parts: share::model::assemble_core::Parts {
-                weapons: share::model::assemble_core::Weapons {
+            parts: Parts {
+                weapons: Weapons {
                     r_arm: "Laser Blade".to_owned(),
                     l_arm: "Laser Blade".to_owned(),
                     r_back: "Laser Blade".to_owned(),
                     l_back: "Laser Blade".to_owned(),
                 },
-                frame: share::model::assemble_core::Frame {
+                frame: Frame {
                     head: "Head Type A".to_owned(),
                     core: "Core Type A".to_owned(),
                     arms: "Arms Type A".to_owned(),
                     legs: "Legs Type A".to_owned(),
                 },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
             },
         };
         let user_id = 1;
@@ -464,6 +485,7 @@ mod tests {
             .unwrap();
 
         let create_asm = AcAssembleNonId {
+            user_id: 1,
             pilot_name: "test pilot".to_owned(),
             ac_name: "test ac ".to_owned(),
             description: "test description".to_owned(),
@@ -484,6 +506,12 @@ mod tests {
                     arms: "Arms Type A".to_owned(),
                     legs: "Legs Type A".to_owned(),
                 },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
             },
         };
         let user_id = 1;
@@ -526,6 +554,7 @@ mod tests {
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
+            user_id: 1,
             pilot_name: "test pilot".to_owned(),
             ac_name: "test ac ".to_owned(),
             description: "test description".to_owned(),
@@ -546,6 +575,12 @@ mod tests {
                     arms: "Arms Type A".to_owned(),
                     legs: "Legs Type A".to_owned(),
                 },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
             },
         };
         let user_id = 1;
@@ -553,6 +588,7 @@ mod tests {
 
         let asm = AcAssemble {
             id,
+            user_id: 1,
             pilot_name: "test2 pilot".to_owned(),
             ac_name: "test2 ac ".to_owned(),
             description: "test2 description".to_owned(),
@@ -573,6 +609,12 @@ mod tests {
                     arms: "Arms Type B".to_owned(),
                     legs: "Legs Type B".to_owned(),
                 },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
             },
         };
         repo.update(asm.clone()).await.unwrap();
@@ -594,6 +636,7 @@ mod tests {
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
+            user_id: 1,
             pilot_name: "test pilot".to_owned(),
             ac_name: "test ac ".to_owned(),
             description: "test description".to_owned(),
@@ -614,6 +657,12 @@ mod tests {
                     arms: "Arms Type A".to_owned(),
                     legs: "Legs Type A".to_owned(),
                 },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
             },
         };
         let user_id = 1;
