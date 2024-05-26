@@ -46,6 +46,21 @@ pub struct AcAssemble {
     pub remarks: String,
 }
 
+impl Into<AcAssembleNonId> for AcAssemble {
+    fn into(self) -> AcAssembleNonId {
+        AcAssembleNonId {
+            pilot_name: self.pilot_name,
+            ac_name: self.ac_name,
+            ac_card_image_url: self.ac_card_image_url,
+            emblem_image_url: self.emblem_image_url,
+            ac_image_urls: self.ac_image_urls,
+            parts: self.parts,
+            description: self.description,
+            remarks: self.remarks,
+        }
+    }
+}
+
 #[typeshare]
 #[derive(Debug, Clone, PartialEq, Eq ,Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
