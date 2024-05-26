@@ -406,7 +406,6 @@ impl Ac6AssembliesRepo {
         Ok(())
     }
 
-
     pub async fn delete(&self, id: i32) -> Result<()> {
         sqlx::query!(
             r#"
@@ -623,7 +622,6 @@ mod tests {
 
         assert_eq!(asm, read_asm);
     }
-
 
     #[tokio::test]
     async fn test_delete() {

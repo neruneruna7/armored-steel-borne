@@ -32,7 +32,6 @@ pub struct Inner {
     pub generator: String,
 }
 
-
 #[typeshare]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
