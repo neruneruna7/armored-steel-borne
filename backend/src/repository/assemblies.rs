@@ -266,6 +266,7 @@ mod tests {
     use std::env;
 
     #[tokio::test]
+    /// テストデータを挿入する
     async fn test_create() {
         dotenv().ok();
 
@@ -300,7 +301,7 @@ mod tests {
         };
         let user_id = 1;
         let id = repo.create(asm, user_id).await.unwrap();
-        panic!("id: {}", id);
+        repo.delete(id).await.unwrap();
     }
 
     #[tokio::test]
@@ -311,14 +312,39 @@ mod tests {
         .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
         .await
         .unwrap();
+
+        let create_asm = AcAssembleNonId {
+            pilot_name: "test pilot".to_owned(),
+            ac_name: "test ac ".to_owned(),
+            description: "test description".to_owned(),
+            remarks: "test remark".to_owned(),
+            ac_card_image_url: "test_url".to_owned(),
+            emblem_image_url: "test_url".to_owned(),
+            ac_image_urls: vec!["test_url".to_owned()],
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    r_arm: "Laser Blade".to_owned(),
+                    l_arm: "Laser Blade".to_owned(),
+                    r_back: "Laser Blade".to_owned(),
+                    l_back: "Laser Blade".to_owned(),
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: "Head Type A".to_owned(),
+                    core: "Core Type A".to_owned(),
+                    arms: "Arms Type A".to_owned(),
+                    legs: "Legs Type A".to_owned(),
+                },
+            },
+        };
+        let user_id = 1;
+
         let repo = Ac6AssembliesRepo::new(db);
 
-        let id = 1;
-        let asm = repo.read(id).await.unwrap();
-        panic!("asm: {:?}", asm);
+        let id = repo.create(create_asm, user_id).await.unwrap();
+        let read_asm = repo.read(id).await.unwrap();
     }
 
-    #[tokio::test]
+    #[tokio::test]    
     async fn test_delete() {
         dotenv().ok();
 
@@ -328,7 +354,50 @@ mod tests {
         .unwrap();
         let repo = Ac6AssembliesRepo::new(db);
 
-        let id = 6;
+        let asm = AcAssembleNonId {
+            pilot_name: "test pilot".to_owned(),
+            ac_name: "test ac ".to_owned(),
+            description: "test description".to_owned(),
+            remarks: "test remark".to_owned(),
+            ac_card_image_url: "test_url".to_owned(),
+            emblem_image_url: "test_url".to_owned(),
+            ac_image_urls: vec!["test_url".to_owned()],
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    r_arm: "Laser Blade".to_owned(),
+                    l_arm: "Laser Blade".to_owned(),
+                    r_back: "Laser Blade".to_owned(),
+                    l_back: "Laser Blade".to_owned(),
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: "Head Type A".to_owned(),
+                    core: "Core Type A".to_owned(),
+                    arms: "Arms Type A".to_owned(),
+                    legs: "Legs Type A".to_owned(),
+                },
+            },
+        };
+        let user_id = 1;
+        let id = repo.create(asm, user_id).await.unwrap();
         repo.delete(id).await.unwrap();
     }
+
+
+    // テストデータを削除する
+    // 関数の都合，テストデータを削除する際には，テストデータのidを指定する必要がある
+    // createテストはdeleteの正常動作に依存し，deleteテストはcreateの正常動作に依存するため，両方壊れるとうまくテストできない
+    // createとdeleteが同時に不具合が起きた場合，この手動でidを指定するテストを使ってテストする 
+    // #[tokio::test]    
+    // async fn test_delete_manual() {
+    //     dotenv().ok();
+
+    //     let db = PgPoolOptions::new()
+    //     .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+    //     .await
+    //     .unwrap();
+    //     let repo = Ac6AssembliesRepo::new(db);
+
+    //     let id = 6;
+    //     repo.delete(id).await.unwrap();
+    // }
 }
