@@ -241,6 +241,19 @@ impl Ac6AssembliesRepo {
         .await?;
         Ok(asm)
     }
+
+    pub async fn delete(&self, id: i32) -> Result<()> {
+        sqlx::query!(
+            r#"
+            DELETE FROM ac6_assemblies
+            WHERE id = $1
+            "#,
+            id
+        )
+        .execute(&self.db)
+        .await?;
+        Ok(())
+    }
 }
 
 
@@ -288,5 +301,34 @@ mod tests {
         let user_id = 1;
         let id = repo.create(asm, user_id).await.unwrap();
         panic!("id: {}", id);
+    }
+
+    #[tokio::test]
+    async fn test_read() {
+        dotenv().ok();
+
+        let db = PgPoolOptions::new()
+        .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+        .await
+        .unwrap();
+        let repo = Ac6AssembliesRepo::new(db);
+
+        let id = 1;
+        let asm = repo.read(id).await.unwrap();
+        panic!("asm: {:?}", asm);
+    }
+
+    #[tokio::test]
+    async fn test_delete() {
+        dotenv().ok();
+
+        let db = PgPoolOptions::new()
+        .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+        .await
+        .unwrap();
+        let repo = Ac6AssembliesRepo::new(db);
+
+        let id = 6;
+        repo.delete(id).await.unwrap();
     }
 }
