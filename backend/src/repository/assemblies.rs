@@ -397,8 +397,10 @@ mod tests {
 
         let repo = Ac6AssembliesRepo::new(db);
 
-        let id = repo.create(create_asm, user_id).await.unwrap();
+        let id = repo.create(create_asm.clone(), user_id).await.unwrap();
         let read_asm = repo.read(id).await.unwrap();
+
+        assert_eq!(create_asm, read_asm.into());
     }
 
     #[tokio::test]    
