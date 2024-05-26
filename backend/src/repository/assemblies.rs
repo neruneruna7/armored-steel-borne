@@ -31,6 +31,63 @@ pub struct Ac6AssemblyRead {
     pub user_id: i32,
 }
 
+impl Into<AcAssemble> for Ac6AssemblyRead {
+    fn into(self) -> AcAssemble {
+        AcAssemble {
+            id: self.id,
+            pilot_name: self.pilot_name,
+            ac_name: self.ac_name,
+            remarks: self.remarks,
+            description: self.description,
+            ac_card_image_url: self.ac_card_image_url,
+            emblem_image_url: self.emblem_image_url,
+            ac_image_urls: self.ac_image_urls.to_vec(),
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    l_arm: self.l_arm_name,
+                    r_arm: self.r_arm_name,
+                    l_back: self.l_back_name,
+                    r_back: self.r_back_name,
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: self.head_name,
+                    core: self.core_name,
+                    arms: self.arms_name,
+                    legs: self.legs_name,
+                },
+            },
+        }
+    }
+}
+
+impl Into<AcAssembleNonId> for Ac6AssemblyRead {
+    fn into(self) -> AcAssembleNonId {
+        AcAssembleNonId {
+            pilot_name: self.pilot_name,
+            ac_name: self.ac_name,
+            remarks: self.remarks,
+            description: self.description,
+            ac_card_image_url: self.ac_card_image_url,
+            emblem_image_url: self.emblem_image_url,
+            ac_image_urls: self.ac_image_urls.to_vec(),
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    l_arm: self.l_arm_name,
+                    r_arm: self.r_arm_name,
+                    l_back: self.l_back_name,
+                    r_back: self.r_back_name,
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: self.head_name,
+                    core: self.core_name,
+                    arms: self.arms_name,
+                    legs: self.legs_name,
+                },
+            },
+        }
+    }
+}
+
 #[derive(Debug, Deserialize, FromRow)]
 pub struct Ac6AssemblyInsert {
     pub pilot_name: String,
