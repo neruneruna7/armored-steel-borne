@@ -392,12 +392,11 @@ impl Ac6AssembliesRepo {
             asm.parts.frame.core,
             asm.parts.frame.arms,
             asm.parts.frame.legs,
-            // 型にまだないので，仮で入れている
             asm.parts.inner.booster,
             asm.parts.inner.fcs,
             asm.parts.inner.generator,
-            Some("Shield".to_owned()),
-            1,
+            asm.parts.expansion,
+            asm.user_id,
             asm.id
         )
         .execute(&self.db)
