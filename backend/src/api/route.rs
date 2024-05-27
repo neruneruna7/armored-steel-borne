@@ -1,4 +1,7 @@
-use axum::{routing::{get, post}, Json, Router};
+use axum::{
+    routing::{get, post},
+    Json, Router,
+};
 use share::model::{assemble_core::*, assemble_reqres::*};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
@@ -42,7 +45,7 @@ async fn healthz() -> Json<&'static str> {
         AcAsmGetRes,
         AcAsmListRes,
         AcAssemble,
-        AcAssembleNonUlid,
+        AcAssembleNonId,
         Weapons,
         Frame,
         Parts,

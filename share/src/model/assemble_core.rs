@@ -1,10 +1,9 @@
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
-use ulid::Ulid;
 use utoipa::ToSchema;
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Weapons {
     pub r_arm: String,
@@ -14,7 +13,7 @@ pub struct Weapons {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Frame {
     pub head: String,
@@ -24,18 +23,30 @@ pub struct Frame {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct Inner {
+    pub booster: String,
+    pub fcs: String,
+    pub generator: String,
+}
+
+#[typeshare]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Parts {
     pub weapons: Weapons,
     pub frame: Frame,
+    pub inner: Inner,
+    pub expansion: Option<String>,
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAssemble {
-    pub ulid: Ulid,
+    pub id: i32,
+    pub user_id: i32,
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,
@@ -46,10 +57,27 @@ pub struct AcAssemble {
     pub remarks: String,
 }
 
+impl From<AcAssemble> for AcAssembleNonId {
+    fn from(val: AcAssemble) -> Self {
+        AcAssembleNonId {
+            user_id: val.user_id,
+            pilot_name: val.pilot_name,
+            ac_name: val.ac_name,
+            ac_card_image_url: val.ac_card_image_url,
+            emblem_image_url: val.emblem_image_url,
+            ac_image_urls: val.ac_image_urls,
+            parts: val.parts,
+            description: val.description,
+            remarks: val.remarks,
+        }
+    }
+}
+
 #[typeshare]
-#[derive(Debug, Clone, Serialize,Deserialize, ToSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct AcAssembleNonUlid {
+pub struct AcAssembleNonId {
+    pub user_id: i32,
     pub pilot_name: String,
     pub ac_name: String,
     pub ac_card_image_url: String,

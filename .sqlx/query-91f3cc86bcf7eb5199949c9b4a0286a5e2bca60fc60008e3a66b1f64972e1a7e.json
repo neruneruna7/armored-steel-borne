@@ -1,0 +1,41 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO ac6_assemblies (\n                pilot_name,\n                ac_name,\n                description,\n                remarks,\n                ac_card_image_url,\n                emblem_image_url,\n                ac_image_urls,\n                l_arm_name,\n                r_arm_name,\n                l_back_name,\n                r_back_name,\n                head_name,\n                core_name,\n                arms_name,\n                legs_name,\n                boost_name,\n                fcs_name,\n                generator_name,\n                expansion_name,\n                user_id\n            )\n            VALUES (\n                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,\n                $11, $12, $13, $14, $15, $16, $17, $18, $19, $20\n            )\n            RETURNING id\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "TextArray",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "91f3cc86bcf7eb5199949c9b4a0286a5e2bca60fc60008e3a66b1f64972e1a7e"
+}

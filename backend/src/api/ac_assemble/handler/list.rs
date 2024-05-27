@@ -26,7 +26,7 @@ pub async fn list_ac_asm(query: Option<Query<AcAsmListReq>>) -> impl IntoRespons
     (
         StatusCode::OK,
         Json(AcAsmListRes {
-            ac_assembles: ac_assembles,
+            ac_assembles,
         }),
     )
 }

@@ -7,12 +7,12 @@ use utoipa::IntoParams;
 use utoipa::ToSchema;
 
 use super::assemble_core::AcAssemble;
-use super::assemble_core::AcAssembleNonUlid;
+use super::assemble_core::AcAssembleNonId;
 
 #[typeshare]
 // #[derive(Deserialize, ToSchema)]
 // #[serde(rename_all = "camelCase")]
-pub type AcAsmGetReq = Ulid;
+pub type AcAsmGetReq = i32;
 
 #[typeshare]
 #[derive(Debug, Clone, Serialize, ToSchema)]
@@ -48,7 +48,6 @@ pub struct AcAsmListRes {
     pub ac_assembles: Vec<AcAssemble>,
 }
 
-
 #[typeshare]
 #[derive(Debug, Clone, Deserialize, IntoParams)]
 #[serde(rename_all = "camelCase")]
@@ -65,5 +64,5 @@ pub struct AcAsmUpdateReq {
 #[derive(Debug, Clone, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmPostReq {
-    pub ac_assemble: AcAssembleNonUlid,
+    pub ac_assemble: AcAssembleNonId,
 }

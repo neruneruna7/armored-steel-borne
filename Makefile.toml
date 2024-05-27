@@ -9,3 +9,13 @@ args = [
     "--lang=typescript",
     "--output-file=./share/assemble_type.ts"
 ]
+
+[tasks.sqlx-prepare]
+command = "sqlx"
+args = ["prepare", "--workspace"]
+
+
+[tasks.test]
+command = "cargo"
+args = ["test", "--","--nocapture"]
+description = "テスト実行中に標準出力を表示する read_listのテストを手動で確認する際に使う"
