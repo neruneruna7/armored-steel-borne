@@ -66,7 +66,7 @@ INSERT INTO ac6_assemblies (
     core_name,
     arms_name,
     legs_name,
-    boost_name,
+    booster_name,
     fcs_name,
     generator_name,
     expansion_name,

@@ -1,0 +1,143 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                id,\n                pilot_name,\n                ac_name,\n                description,\n                remarks,\n                ac_card_image_url,\n                emblem_image_url,\n                ac_image_urls,\n                l_arm_name,\n                r_arm_name,\n                l_back_name,\n                r_back_name,\n                head_name,\n                core_name,\n                arms_name,\n                legs_name,\n                boost_name,\n                fcs_name,\n                generator_name,\n                expansion_name,\n                user_id\n            FROM ac6_assemblies\n            WHERE id >= $1\n            ORDER BY id DESC\n            LIMIT $2\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "pilot_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "ac_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "remarks",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "ac_card_image_url",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "emblem_image_url",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 7,
+        "name": "ac_image_urls",
+        "type_info": "TextArray"
+      },
+      {
+        "ordinal": 8,
+        "name": "l_arm_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 9,
+        "name": "r_arm_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 10,
+        "name": "l_back_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 11,
+        "name": "r_back_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 12,
+        "name": "head_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 13,
+        "name": "core_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 14,
+        "name": "arms_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 15,
+        "name": "legs_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 16,
+        "name": "boost_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 17,
+        "name": "fcs_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 18,
+        "name": "generator_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 19,
+        "name": "expansion_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 20,
+        "name": "user_id",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ]
+  },
+  "hash": "bf83fef226bf64ea6397765db991d4b421bbae374d69fbb189a9097ff1c6f50a"
+}
