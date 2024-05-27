@@ -531,14 +531,56 @@ mod tests {
             .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
             .await
             .unwrap();
+        let create_asm = AcAssembleNonId {
+            user_id: 1,
+            pilot_name: "test pilot".to_owned(),
+            ac_name: "test ac ".to_owned(),
+            description: "test description".to_owned(),
+            remarks: "test remark".to_owned(),
+            ac_card_image_url: "test_url".to_owned(),
+            emblem_image_url: "test_url".to_owned(),
+            ac_image_urls: vec!["test_url".to_owned()],
+            parts: share::model::assemble_core::Parts {
+                weapons: share::model::assemble_core::Weapons {
+                    r_arm: "Laser Blade".to_owned(),
+                    l_arm: "Laser Blade".to_owned(),
+                    r_back: "Laser Blade".to_owned(),
+                    l_back: "Laser Blade".to_owned(),
+                },
+                frame: share::model::assemble_core::Frame {
+                    head: "Head Type A".to_owned(),
+                    core: "Core Type A".to_owned(),
+                    arms: "Arms Type A".to_owned(),
+                    legs: "Legs Type A".to_owned(),
+                },
+                inner: Inner {
+                    booster: "Booster Type A".to_owned(),
+                    fcs: "FCS Type A".to_owned(),
+                    generator: "Generator Type A".to_owned(),
+                },
+                expansion: Some("Shield".to_string()),
+            },
+        };
+        let user_id = 1;
 
         let repo = Ac6AssembliesRepo::new(db);
+        let first_id = repo.create(create_asm.clone(), user_id).await.unwrap();
+        for _ in 1..10 {
+            repo.create(create_asm.clone(), user_id).await.unwrap();
+        }
 
-        let read_asm = repo.read_list(0, 10).await.unwrap();
+        let read_asm = repo.read_list(first_id, 10).await.unwrap();
+        let mut read_asm_ids = read_asm.iter().map(|a| a.id).collect::<Vec<i32>>();
+        let mut check_asm_ids = (first_id..first_id + 10).collect::<Vec<i32>>();
+        let check_asm = (0..10).map(|_| create_asm.clone()).collect::<Vec<AcAssembleNonId>>();
+        let read_asm = read_asm.into_iter().map(|a| a.into()).collect::<Vec<AcAssembleNonId>>();
 
         read_asm.iter().for_each(|a| {
             println!("{:?}", a);
         });
+
+        assert_eq!(read_asm_ids.sort(), check_asm_ids.sort());
+        assert_eq!(read_asm, check_asm);
     }
 
     #[tokio::test]
