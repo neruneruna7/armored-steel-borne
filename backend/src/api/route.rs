@@ -13,7 +13,7 @@ use super::ac_assemble::handler::{create_ac_asm, get_ac_asm, list_ac_asm};
 pub fn route(state: AppState) -> Router {
     Router::new()
         .route("/healthz", get(healthz))
-        .route("/asm/:ulid", get(get_ac_asm))
+        .route("/asm/:id", get(get_ac_asm))
         .route("/asm/list", get(list_ac_asm))
         // あとでAuthミドルウェアを追加したところにルーティングする必要あり
         .route("/asm/create", post(create_ac_asm))
