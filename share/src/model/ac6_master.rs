@@ -1,5 +1,5 @@
 pub mod weapons;
-pub mod head
+pub mod head;
 pub mod core;
 pub mod arms;
 pub mod legs;
