@@ -27,9 +27,9 @@ pub struct AcAsmGetRes {
 #[serde(rename_all = "camelCase", default)]
 pub struct AcAsmListReq {
     #[serde_as(as = "NoneAsEmptyString")]
-    pub prev_id: Option<Ulid>,
+    pub prev_id: Option<i32>,
     #[serde_as(as = "NoneAsEmptyString")]
-    pub size: Option<u32>,
+    pub size: Option<i64>,
 }
 
 impl Default for AcAsmListReq {
