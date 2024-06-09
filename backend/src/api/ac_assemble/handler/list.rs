@@ -2,7 +2,7 @@ use http::StatusCode;
 use share::model::assemble_reqres::{AcAsmListReq, AcAsmListRes};
 use tracing::info;
 
-use crate::{api::ac_assemble::dummy_data, repository::assemblies::Ac6AssembliesRepo, AppState};
+use crate::{repository::assemblies::Ac6AssembliesRepo, AppState};
 
 use axum::{
     extract::{Query, State},

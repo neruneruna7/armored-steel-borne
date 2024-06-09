@@ -1,5 +1,6 @@
 use share::model::assemble_core::{AcAssemble, Frame, Inner, Parts, Weapons};
 
+#[allow(dead_code)]
 pub fn dumy_assembles() -> Vec<AcAssemble> {
     let ac_assemles = [
         AcAssemble {

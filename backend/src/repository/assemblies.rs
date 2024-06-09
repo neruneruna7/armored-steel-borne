@@ -351,6 +351,7 @@ impl Ac6AssembliesRepo {
         Ok(asm.into_iter().map(|a| a.into()).collect())
     }
 
+    #[allow(dead_code)]
     pub async fn update(&self, asm: AcAssemble) -> Result<()> {
         sqlx::query!(
             r#"
@@ -405,6 +406,7 @@ impl Ac6AssembliesRepo {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub async fn delete(&self, id: i32) -> Result<()> {
         sqlx::query!(
             r#"

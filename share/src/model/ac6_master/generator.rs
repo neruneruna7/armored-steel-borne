@@ -1,8 +1,8 @@
 /// パーツがもつパラメータなど
 #[derive(Debug, Clone)]
 pub struct Generator {
-    name: String,
-    info: String,
+    _name: String,
+    _info: String,
 }
 
 /// パーツ一覧

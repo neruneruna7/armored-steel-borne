@@ -1,8 +1,8 @@
 /// 腕パーツがもつパラメータなど
 #[derive(Debug, Clone)]
 pub struct Arm {
-    name: String,
-    info: String,
+    _name: String,
+    _info: String,
 }
 
 /// 腕パーツ一覧
