@@ -27,7 +27,7 @@ pub async fn get_ac_asm(
     // // ここでAcAssembleのダミーデータを作成します。
     // let ac_assemble = dummy_data::dumy_assembles();
 
-    // // reqのUlidと一致するAcAssembleを取得
+    // // reqのIdと一致するAcAssembleを取得
     // // ひとまずエラーハンドリングはせずに動作確認
     // let ac_assemble = ac_assemble
     //     .into_iter()
