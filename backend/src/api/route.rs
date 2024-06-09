@@ -49,6 +49,7 @@ async fn healthz() -> Json<&'static str> {
         AcAssembleNonId,
         Weapons,
         Frame,
+        Inner,
         Parts,
     ))
 )]

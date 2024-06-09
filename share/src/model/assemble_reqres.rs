@@ -10,9 +10,11 @@ use super::assemble_core::AcAssemble;
 use super::assemble_core::AcAssembleNonId;
 
 #[typeshare]
-// #[derive(Deserialize, ToSchema)]
-// #[serde(rename_all = "camelCase")]
-pub type AcAsmGetReq = i32;
+#[derive(Debug, Clone, Deserialize, IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmGetReq {
+    pub id: i32,
+}
 
 #[typeshare]
 #[derive(Debug, Clone, Serialize, ToSchema)]

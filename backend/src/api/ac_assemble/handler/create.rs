@@ -31,12 +31,54 @@ pub async fn create_ac_asm(
 
     // リクエストをもとにDBへクエリ発行
     let repo = Ac6AssembliesRepo::new(state.postgres.clone());
-    let id = repo
-        .create(asm)
-        .await
-        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    let id = repo.create(asm).await.map_err(|e| {
+        info!("create_assemble error: {:?}", e);
+        StatusCode::BAD_REQUEST
+    })?;
 
     // 作成したIDを返却
     let res = AcAsmPostRes { created_id: id };
     Ok(Json(res))
 }
+
+// テスト用のリクエスト
+/*
+curl -X 'POST' \
+  'http://127.0.0.1:8000/asm/create' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "acAssemble": {
+    "acCardImageUrl": "string",
+    "acImageUrls": [
+      "string"
+    ],
+    "acName": "string",
+    "description": "string",
+    "emblemImageUrl": "string",
+    "parts": {
+      "expansion": "Shield",
+      "frame": {
+        "arms": "Arms Type A",
+        "core": "Core Type A",
+        "head": "Head Type A",
+        "legs": "Legs Type A"
+      },
+      "inner": {
+        "booster": "Booster Type A",
+        "fcs": "FCS Type A",
+        "generator": "Generator Type A"
+      },
+      "weapons": {
+        "lArm": "Laser Blade",
+        "lBack": "Laser Blade",
+        "rArm": "Laser Blade",
+        "rBack": "Laser Blade"
+      }
+    },
+    "pilotName": "string",
+    "remarks": "string",
+    "userId": 1
+  }
+}'
+*/

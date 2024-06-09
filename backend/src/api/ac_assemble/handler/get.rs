@@ -12,9 +12,9 @@ use axum::{
 
 #[utoipa::path(
 get,
-path = "/asm/{ulid}",
+path = "/asm/{id}",
 context_path = "api",
-// params(Ulid),
+params(AcAsmGetReq),
 responses(
     (status = 200, description = "OK", body = AcAsmGetRes),
 ),
@@ -36,7 +36,10 @@ pub async fn get_ac_asm(
 
     // reqのidをもとに，DBからAcAssembleを取得
     let repo = Ac6AssembliesRepo::new(state.postgres.clone());
-    let ac_assemble = repo.read(req).await.map_err(|_| StatusCode::BAD_REQUEST)?;
+    let ac_assemble = repo
+        .read(req.id)
+        .await
+        .map_err(|_| StatusCode::BAD_REQUEST)?;
 
     info!("ac_assemble name: {:?}", ac_assemble.ac_name);
 
