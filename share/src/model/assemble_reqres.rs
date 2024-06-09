@@ -66,3 +66,10 @@ pub struct AcAsmUpdateReq {
 pub struct AcAsmPostReq {
     pub ac_assemble: AcAssembleNonId,
 }
+
+#[typeshare]
+#[derive(Debug, Clone, Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmPostRes {
+    pub created_id: i32,
+}

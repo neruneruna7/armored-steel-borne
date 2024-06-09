@@ -42,6 +42,7 @@ async fn healthz() -> Json<&'static str> {
     ),
     components(schemas(
         AcAsmPostReq,
+        AcAsmPostRes,
         AcAsmGetRes,
         AcAsmListRes,
         AcAssemble,

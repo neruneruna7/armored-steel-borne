@@ -173,7 +173,7 @@ impl Ac6AssemblyInsert {
     }
 
     // インナーパーツはまだ未実装
-    fn from_acasm_nonid(value: AcAssembleNonId, user_id: i32) -> Self {
+    fn from_acasm_nonid(value: AcAssembleNonId) -> Self {
         Ac6AssemblyInsert::new(
             value.pilot_name,
             value.ac_name,
@@ -194,7 +194,7 @@ impl Ac6AssemblyInsert {
             value.parts.inner.fcs,
             value.parts.inner.generator,
             value.parts.expansion,
-            user_id,
+            value.user_id,
         )
     }
 }
@@ -215,8 +215,8 @@ impl Ac6AssembliesRepo {
         Self { db }
     }
 
-    pub async fn create(&self, asm: AcAssembleNonId, user_id: i32) -> Result<i32> {
-        let asm = Ac6AssemblyInsert::from_acasm_nonid(asm, user_id);
+    pub async fn create(&self, asm: AcAssembleNonId) -> Result<i32> {
+        let asm = Ac6AssemblyInsert::from_acasm_nonid(asm);
         let r = sqlx::query_as!(
             ReturnCreate,
             r#"
@@ -468,8 +468,8 @@ mod tests {
                 expansion: Some("Shield".to_string()),
             },
         };
-        let user_id = 1;
-        let id = repo.create(asm, user_id).await.unwrap();
+
+        let id = repo.create(asm).await.unwrap();
         repo.delete(id).await.unwrap();
     }
 
@@ -512,11 +512,10 @@ mod tests {
                 expansion: Some("Shield".to_string()),
             },
         };
-        let user_id = 1;
 
         let repo = Ac6AssembliesRepo::new(db);
 
-        let id = repo.create(create_asm.clone(), user_id).await.unwrap();
+        let id = repo.create(create_asm.clone()).await.unwrap();
         let read_asm = repo.read(id).await.unwrap();
         repo.delete(id).await.unwrap();
 
@@ -561,12 +560,11 @@ mod tests {
                 expansion: Some("Shield".to_string()),
             },
         };
-        let user_id = 1;
 
         let repo = Ac6AssembliesRepo::new(db);
-        let first_id = repo.create(create_asm.clone(), user_id).await.unwrap();
+        let first_id = repo.create(create_asm.clone()).await.unwrap();
         for _ in 1..10 {
-            repo.create(create_asm.clone(), user_id).await.unwrap();
+            repo.create(create_asm.clone()).await.unwrap();
         }
 
         let read_asm = repo.read_list(first_id, 10).await.unwrap();
@@ -628,8 +626,8 @@ mod tests {
                 expansion: Some("Shield".to_string()),
             },
         };
-        let user_id = 1;
-        let id = repo.create(asm, user_id).await.unwrap();
+
+        let id = repo.create(asm).await.unwrap();
 
         let asm = AcAssemble {
             id,
@@ -709,8 +707,8 @@ mod tests {
                 expansion: Some("Shield".to_string()),
             },
         };
-        let user_id = 1;
-        let id = repo.create(asm, user_id).await.unwrap();
+
+        let id = repo.create(asm).await.unwrap();
         repo.delete(id).await.unwrap();
     }
 
