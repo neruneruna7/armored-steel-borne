@@ -1,11 +1,9 @@
-
 /// 腕パーツがもつパラメータなど
 #[derive(Debug, Clone)]
 pub struct Arm {
     name: String,
     info: String,
 }
-
 
 /// 腕パーツ一覧
 // ハードコードしようかとも思ったが，やめよう

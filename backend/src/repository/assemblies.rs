@@ -205,6 +205,7 @@ pub struct Ac6AssembliesRepo {
 
 /// 新しくレコードを挿入する際，RETURNINGでidを取得するための構造体
 /// query_as!マクロが構造体しかとらない仕様のため，こうやって構造体を定義している
+#[allow(dead_code)]
 struct ReturnCreate {
     id: i32,
 }
@@ -571,8 +572,13 @@ mod tests {
         let read_asm = repo.read_list(first_id, 10).await.unwrap();
         let mut read_asm_ids = read_asm.iter().map(|a| a.id).collect::<Vec<i32>>();
         let mut check_asm_ids = (first_id..first_id + 10).collect::<Vec<i32>>();
-        let check_asm = (0..10).map(|_| create_asm.clone()).collect::<Vec<AcAssembleNonId>>();
-        let read_asm = read_asm.into_iter().map(|a| a.into()).collect::<Vec<AcAssembleNonId>>();
+        let check_asm = (0..10)
+            .map(|_| create_asm.clone())
+            .collect::<Vec<AcAssembleNonId>>();
+        let read_asm = read_asm
+            .into_iter()
+            .map(|a| a.into())
+            .collect::<Vec<AcAssembleNonId>>();
 
         read_asm.iter().for_each(|a| {
             println!("{:?}", a);

@@ -1,4 +1,3 @@
-
 /// パーツがもつパラメータなど
 #[derive(Debug, Clone)]
 pub struct Weapon {
@@ -10,7 +9,7 @@ pub struct Weapon {
 // ハードコードしようかとも思ったが，やめよう
 // 必要に応じてDBから取得する処理を入れればいい
 #[derive(Debug, Clone)]
-pub enum  WeaponList {
+pub enum WeaponList {
     LaserBlade(Weapon),
     MachineGun(Weapon),
     GrenadeLauncher(Weapon),

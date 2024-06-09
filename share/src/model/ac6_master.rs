@@ -1,9 +1,11 @@
-pub mod weapons;
-pub mod head;
-pub mod core;
+// まだ使わない
+// 作ったはいいが，あとからだな
 pub mod arms;
-pub mod legs;
 pub mod booster;
+pub mod core;
+pub mod expansion;
 pub mod fcs;
 pub mod generator;
-pub mod expansion;
+pub mod head;
+pub mod legs;
+pub mod weapons;

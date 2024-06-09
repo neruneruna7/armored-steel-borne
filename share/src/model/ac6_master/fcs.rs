@@ -1,11 +1,9 @@
-
 /// パーツがもつパラメータなど
 #[derive(Debug, Clone)]
 pub struct Fcs {
     name: String,
     info: String,
 }
-
 
 /// パーツ一覧
 // ハードコードしようかとも思ったが，やめよう
