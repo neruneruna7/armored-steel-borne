@@ -1,7 +1,6 @@
 use anyhow::Result;
 use serde::Deserialize;
 use share::model::assemble_core::{AcAssemble, AcAssembleNonId, Frame, Inner, Parts, Weapons};
-use sqlx::types::Json;
 use sqlx::FromRow;
 use sqlx::PgPool;
 
@@ -14,7 +13,7 @@ struct Ac6AssemblyRead {
     remarks: String,
     ac_card_image_url: String,
     emblem_image_url: String,
-    ac_image_urls: Json<Vec<String>>,
+    ac_image_urls: Vec<String>,
     l_arm_name: String,
     r_arm_name: String,
     l_back_name: String,
@@ -206,6 +205,7 @@ pub struct Ac6AssembliesRepo {
 /// 新しくレコードを挿入する際，RETURNINGでidを取得するための構造体
 /// query_as!マクロが構造体しかとらない仕様のため，こうやって構造体を定義している
 #[allow(dead_code)]
+#[derive(Debug, Clone, FromRow)]
 struct ReturnCreate {
     id: i32,
 }
@@ -217,8 +217,7 @@ impl Ac6AssembliesRepo {
 
     pub async fn create(&self, asm: AcAssembleNonId) -> Result<i32> {
         let asm = Ac6AssemblyInsert::from_acasm_nonid(asm);
-        let r = sqlx::query_as!(
-            ReturnCreate,
+        let r: ReturnCreate = sqlx::query_as(
             r#"
             INSERT INTO ac6_assemblies (
                 pilot_name,
@@ -247,28 +246,28 @@ impl Ac6AssembliesRepo {
                 $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
             )
             RETURNING id
-            "#,
-            asm.pilot_name,
-            asm.ac_name,
-            asm.description,
-            asm.remarks,
-            asm.ac_card_image_url,
-            asm.emblem_image_url,
-            &asm.ac_image_urls,
-            asm.l_arm_name,
-            asm.r_arm_name,
-            asm.l_back_name,
-            asm.r_back_name,
-            asm.head_name,
-            asm.core_name,
-            asm.arms_name,
-            asm.legs_name,
-            asm.booster_name,
-            asm.fcs_name,
-            asm.generator_name,
-            asm.expansion_name,
-            asm.user_id
+            "#
         )
+        .bind(asm.pilot_name)
+        .bind(asm.ac_name)
+        .bind(asm.description)
+        .bind(asm.remarks)
+        .bind(asm.ac_card_image_url)
+        .bind(asm.emblem_image_url)
+        .bind(&asm.ac_image_urls)
+        .bind(asm.l_arm_name)
+        .bind(asm.r_arm_name)
+        .bind(asm.l_back_name)
+        .bind(asm.r_back_name)
+        .bind(asm.head_name)
+        .bind(asm.core_name)
+        .bind(asm.arms_name)
+        .bind(asm.legs_name)
+        .bind(asm.booster_name)
+        .bind(asm.fcs_name)
+        .bind(asm.generator_name)
+        .bind(asm.expansion_name)
+        .bind(asm.user_id)
         .fetch_one(&self.db)
         .await?;
 
@@ -276,8 +275,7 @@ impl Ac6AssembliesRepo {
     }
 
     pub async fn read(&self, id: i32) -> Result<AcAssemble> {
-        let asm = sqlx::query_as!(
-            Ac6AssemblyRead,
+        let asm: Ac6AssemblyRead  = sqlx::query_as(
             r#"
             SELECT
                 id,
@@ -303,9 +301,9 @@ impl Ac6AssembliesRepo {
                 user_id
             FROM ac6_assemblies
             WHERE id = $1
-            "#,
-            id
+            "#
         )
+        .bind(id)
         .fetch_one(&self.db)
         .await?;
         Ok(asm.into())
@@ -313,8 +311,7 @@ impl Ac6AssembliesRepo {
 
     // 複数のレコードを取得する
     pub async fn read_list(&self, prev_id: i32, limit_size: i64) -> Result<Vec<AcAssemble>> {
-        let asm = sqlx::query_as!(
-            Ac6AssemblyRead,
+        let asm: Vec<Ac6AssemblyRead> = sqlx::query_as(
             r#"
             SELECT
                 id,
@@ -342,18 +339,19 @@ impl Ac6AssembliesRepo {
             WHERE id >= $1
             ORDER BY id DESC
             LIMIT $2
-            "#,
-            prev_id,
-            limit_size
+            "#
         )
+        .bind(prev_id)
+        .bind(limit_size)
         .fetch_all(&self.db)
         .await?;
+    
         Ok(asm.into_iter().map(|a| a.into()).collect())
     }
 
     #[allow(dead_code)]
     pub async fn update(&self, asm: AcAssemble) -> Result<()> {
-        sqlx::query!(
+        sqlx::query(
             r#"
             UPDATE ac6_assemblies
             SET
@@ -379,28 +377,28 @@ impl Ac6AssembliesRepo {
                 user_id = $20
             WHERE id = $21
             "#,
-            asm.pilot_name,
-            asm.ac_name,
-            asm.description,
-            asm.remarks,
-            asm.ac_card_image_url,
-            asm.emblem_image_url,
-            &asm.ac_image_urls,
-            asm.parts.weapons.l_arm,
-            asm.parts.weapons.r_arm,
-            asm.parts.weapons.l_back,
-            asm.parts.weapons.r_back,
-            asm.parts.frame.head,
-            asm.parts.frame.core,
-            asm.parts.frame.arms,
-            asm.parts.frame.legs,
-            asm.parts.inner.booster,
-            asm.parts.inner.fcs,
-            asm.parts.inner.generator,
-            asm.parts.expansion,
-            asm.user_id,
-            asm.id
         )
+        .bind(&asm.pilot_name)
+        .bind(&asm.ac_name)
+        .bind(&asm.description)
+        .bind(&asm.remarks)
+        .bind(&asm.ac_card_image_url)
+        .bind(&asm.emblem_image_url)
+        .bind(&asm.ac_image_urls)
+        .bind(&asm.parts.weapons.l_arm)
+        .bind(&asm.parts.weapons.r_arm)
+        .bind(&asm.parts.weapons.l_back)
+        .bind(&asm.parts.weapons.r_back)
+        .bind(&asm.parts.frame.head)
+        .bind(&asm.parts.frame.core)
+        .bind(&asm.parts.frame.arms)
+        .bind(&asm.parts.frame.legs)
+        .bind(&asm.parts.inner.booster)
+        .bind(&asm.parts.inner.fcs)
+        .bind(&asm.parts.inner.generator)
+        .bind(&asm.parts.expansion)
+        .bind(asm.user_id)
+        .bind(asm.id)
         .execute(&self.db)
         .await?;
         Ok(())
@@ -408,13 +406,13 @@ impl Ac6AssembliesRepo {
 
     #[allow(dead_code)]
     pub async fn delete(&self, id: i32) -> Result<()> {
-        sqlx::query!(
+        sqlx::query(
             r#"
             DELETE FROM ac6_assemblies
             WHERE id = $1
             "#,
-            id
         )
+        .bind(id)
         .execute(&self.db)
         .await?;
         Ok(())
