@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AcAsmListRes, AcAssemble } from "../../../share/assemble_type";
+import { APIURL} from "@/url";
 
 interface AssembleCardProps {
   id: number, 
@@ -52,9 +53,9 @@ function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCard
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function listAsm(): Promise<AcAsmListRes> {
-  const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/api/asm/list";
-
-  const res = await fetch(`${ASSEMBLE_LIST_URL}`);
+  const ASM_LIST_URL = `${APIURL}asm/list`;
+  
+  const res = await fetch(`${ASM_LIST_URL}`);
   console.log(res);
   const data = await res.json();
   console.log(data);

@@ -7,15 +7,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemble_type";
+import { APIURL } from "@/url";
 
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function getAsm(id: number | undefined): Promise<AcAsmGetRes> {
-  const ASSEMBLE_URL = "http://127.0.0.1:8000/api/asm/";
-  // とりあえず動作確認のためにundifinedも許容
+async function getAsm(id: number): Promise<AcAsmGetRes> {
   await sleep(1000);
   try {
-    const res = await fetch(`${ASSEMBLE_URL}${id}`);
+    const res = await fetch(`${APIURL}/asm${id}`);
     console.log(res);
     const data = await res.json();
     console.log(data);
