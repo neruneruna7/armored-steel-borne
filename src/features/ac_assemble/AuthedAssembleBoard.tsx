@@ -75,6 +75,7 @@ export default function AssembleBoard() {
 
   return (
     <div className="min-h-full w-full flex flex-col justify-center items-center gap-10">
+      <h1>Authed</h1>
       <h1>AC Assemble</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {acCards}
