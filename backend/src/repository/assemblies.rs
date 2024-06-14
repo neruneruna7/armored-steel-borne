@@ -312,7 +312,7 @@ impl Ac6AssembliesRepo {
     }
 
     // 複数のレコードを取得する
-    pub async fn read_list(&self, prev_id: i32, limit_size: i64) -> Result<Vec<AcAssemble>> {
+    pub async fn read_list(&self, prev_id: i32, limit_size: i32) -> Result<Vec<AcAssemble>> {
         let asm: Vec<Ac6AssemblyRead> = sqlx::query_as(
             r#"
             SELECT
