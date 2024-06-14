@@ -339,7 +339,7 @@ impl Ac6AssembliesRepo {
                 user_id
             FROM ac6_assemblies
             WHERE id >= $1
-            ORDER BY id DESC
+            ORDER BY id ASC
             LIMIT $2
             "#,
         )

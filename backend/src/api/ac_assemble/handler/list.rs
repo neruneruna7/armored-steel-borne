@@ -1,6 +1,7 @@
 use http::StatusCode;
 use share::model::assemble_reqres::{AcAsmListReq, AcAsmListRes};
 use tracing::info;
+use utoipa::openapi::info;
 
 use crate::{repository::assemblies::Ac6AssembliesRepo, AppState};
 
@@ -28,10 +29,11 @@ pub async fn list_ac_asm(
     // ここでAcAssembleのダミーデータを作成します。
     // let ac_assembles = dummy_data::dumy_assembles();
 
+    info!("unwraped req: {:?}", req);
     // DBからAcAssembleを取得
     let repo = Ac6AssembliesRepo::new(state.postgres.clone());
     let ac_assembles = repo
-        .read_list(req.prev_id.unwrap_or_default(), req.size.unwrap())
+        .read_list(req.prev_id.unwrap(), req.size.unwrap())
         .await
         .map_err(|_| StatusCode::BAD_REQUEST)?;
 

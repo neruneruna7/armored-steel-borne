@@ -36,7 +36,7 @@ pub struct AcAsmListReq {
 impl Default for AcAsmListReq {
     fn default() -> Self {
         Self {
-            prev_id: None,
+            prev_id: Some(0),
             size: Some(20),
         }
     }
