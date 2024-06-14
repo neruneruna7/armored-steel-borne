@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AcAsmListRes, AcAssemble } from "../../../share/assemble_type";
+import { APIURL} from "@/url";
 
 interface AssembleCardProps {
-  ulid: string, // UUIDもしくはULIDで一意なIDを付与
+  id: number,
   pilotName: string,
   acName: string;
   acCardImageUrl: string;
@@ -15,7 +16,7 @@ function AuthedAssembleCard({ ac }: { ac: AssembleCardProps }) {
   return (
     // いい感じのホバー時のスタイルがわからん
     <Link href={{
-      pathname: `/asmdashboard/${ac.ulid}`,
+      pathname: `/asmdashboard/${ac.id}`,
     }} className="hover:mix-blend-luminosity hover:bg-gray-600" >
       <div className="border-4 w-80 h-72 relative">
         <div className="flex h-auto border-2">
@@ -38,7 +39,7 @@ function AuthedAssembleCard({ ac }: { ac: AssembleCardProps }) {
 function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCardProps {
   // ここでacAssembleをAcAsmCardPropsに変換します。
   const re: AssembleCardProps = {
-    ulid: acAssemble.ulid,
+    id: acAssemble.id,
     pilotName: acAssemble.pilotName,
     acName: acAssemble.acName,
     acCardImageUrl: acAssemble.acCardImageUrl,
@@ -51,9 +52,9 @@ function convertAcAssembleToAcAsmCardProps(acAssemble: AcAssemble): AssembleCard
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 async function listAsm(): Promise<AcAsmListRes> {
-  const ASSEMBLE_LIST_URL = "http://127.0.0.1:8000/asm/list";
+  const ASM_LIST_URL = `${APIURL}asm/list`;
 
-  const res = await fetch(`${ASSEMBLE_LIST_URL}`);
+  const res = await fetch(`${ASM_LIST_URL}`);
   console.log(res);
   const data = await res.json();
   console.log(data);
@@ -75,6 +76,7 @@ export default function AssembleBoard() {
 
   return (
     <div className="min-h-full w-full flex flex-col justify-center items-center gap-10">
+      <h1>Authed</h1>
       <h1>AC Assemble</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {acCards}

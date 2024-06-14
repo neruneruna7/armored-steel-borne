@@ -30,13 +30,13 @@ pub struct AcAsmListReq {
     #[serde_as(as = "NoneAsEmptyString")]
     pub prev_id: Option<i32>,
     #[serde_as(as = "NoneAsEmptyString")]
-    pub size: Option<i64>,
+    pub size: Option<i32>,
 }
 
 impl Default for AcAsmListReq {
     fn default() -> Self {
         Self {
-            prev_id: None,
+            prev_id: Some(0),
             size: Some(20),
         }
     }
