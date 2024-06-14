@@ -10,12 +10,12 @@ import { AcAsmGetRes, AcAsmListRes, Frame, Weapons } from "../../../share/assemb
 
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-async function getAsm(ulid: string | string[] | undefined): Promise<AcAsmGetRes> {
-  const ASSEMBLE_URL = "http://127.0.0.1:8000/asm/";
+async function getAsm(id: number | undefined): Promise<AcAsmGetRes> {
+  const ASSEMBLE_URL = "http://127.0.0.1:8000/api/asm/";
   // とりあえず動作確認のためにundifinedも許容
   // await sleep(1000);
   try {
-    const res = await fetch(`${ASSEMBLE_URL}${ulid}`);
+    const res = await fetch(`${ASSEMBLE_URL}${id}`);
     console.log(res);
     const data = await res.json();
     console.log(data);
@@ -26,26 +26,26 @@ async function getAsm(ulid: string | string[] | undefined): Promise<AcAsmGetRes>
   }
 }
 
-const dataMap: Map<string, AcAsmGetRes> = new Map();
+const dataMap: Map<number, AcAsmGetRes> = new Map();
 
-function useData1(ulid: string): AcAsmGetRes {
-  const cachedData = dataMap.get(ulid);
+function useData1(id: number): AcAsmGetRes {
+  const cachedData = dataMap.get(id);
   if (cachedData === undefined) {
-    throw getAsm(ulid).then((d) => dataMap.set(ulid, d));
+    throw getAsm(id).then((d) => dataMap.set(id, d));
   }
   return cachedData;
 }
 
 interface AssembleDetailProps {
-  ulid: string
+  id: number
 }
 
 // let acAsmGetRes: AcAsmGetRes | undefined;
-export default function AssembleDetail({ ulid }: AssembleDetailProps) {
+export default function AssembleDetail({ id }: AssembleDetailProps) {
   console.log("AssembleDetail");
-  console.log(ulid);
+  console.log(id);
 
-  const acAsmGetRes = useData1(ulid);
+  const acAsmGetRes = useData1(id);
 
   return (
     <div className="min-h-full w-screen flex flex-col justify-center items-center gap-5">
@@ -54,7 +54,7 @@ export default function AssembleDetail({ ulid }: AssembleDetailProps) {
         <div className="m-5 ">
           <h1 className="text-2xl font-bold">AC: {acAsmGetRes.acAssemble.acName}</h1>
           <h2 className="text-xl">PILOT: {acAsmGetRes.acAssemble.pilotName}</h2>
-          <h2 className="text-xl">ULID: {ulid}</h2>
+          <h2 className="text-xl">ID: {id}</h2>
         </div>
       </div>
       <ImageSwipe images={acAsmGetRes.acAssemble.acImageUrls} />
