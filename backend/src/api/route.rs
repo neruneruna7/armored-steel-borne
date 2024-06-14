@@ -11,19 +11,22 @@ use crate::AppState;
 use super::ac_assemble::handler::{create_ac_asm, get_ac_asm, list_ac_asm};
 
 pub fn route(state: AppState) -> Router {
-    Router::new()
+    let router = Router::new()
         .route("/healthz", get(healthz))
         .route("/asm/:id", get(get_ac_asm))
         .route("/asm/list", get(list_ac_asm))
         // あとでAuthミドルウェアを追加したところにルーティングする必要あり
         .route("/asm/create", post(create_ac_asm))
+        .with_state(state);
+    Router::new()
+        .nest("/api", router)
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
-        .with_state(state)
 }
 
 #[utoipa::path(
     get,
     path = "/healthz",
+    context_path = "/api",
     responses(
         (status = 200, description = "OK", body = &'static str),
     )

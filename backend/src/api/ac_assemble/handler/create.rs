@@ -14,6 +14,7 @@ pub struct UserRequest {
 #[utoipa::path(
     post,
     path = "/asm/create",
+    context_path = "/api",
     request_body = AcAsmPostReq,
     responses(
         (status = 200, description = "OK", body = AcAsmPostRes),
