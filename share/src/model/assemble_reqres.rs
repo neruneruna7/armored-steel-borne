@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use serde_with::NoneAsEmptyString;
 use typeshare::typeshare;
-use ulid::Ulid;
 use utoipa::IntoParams;
 use utoipa::ToSchema;
 
@@ -10,9 +9,11 @@ use super::assemble_core::AcAssemble;
 use super::assemble_core::AcAssembleNonId;
 
 #[typeshare]
-// #[derive(Deserialize, ToSchema)]
-// #[serde(rename_all = "camelCase")]
-pub type AcAsmGetReq = i32;
+#[derive(Debug, Clone, Deserialize, IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmGetReq {
+    pub id: i32,
+}
 
 #[typeshare]
 #[derive(Debug, Clone, Serialize, ToSchema)]
@@ -27,9 +28,9 @@ pub struct AcAsmGetRes {
 #[serde(rename_all = "camelCase", default)]
 pub struct AcAsmListReq {
     #[serde_as(as = "NoneAsEmptyString")]
-    pub prev_id: Option<Ulid>,
+    pub prev_id: Option<i32>,
     #[serde_as(as = "NoneAsEmptyString")]
-    pub size: Option<u32>,
+    pub size: Option<i64>,
 }
 
 impl Default for AcAsmListReq {
@@ -65,4 +66,11 @@ pub struct AcAsmUpdateReq {
 #[serde(rename_all = "camelCase")]
 pub struct AcAsmPostReq {
     pub ac_assemble: AcAssembleNonId,
+}
+
+#[typeshare]
+#[derive(Debug, Clone, Serialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct AcAsmPostRes {
+    pub created_id: i32,
 }

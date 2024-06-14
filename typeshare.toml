@@ -1,3 +1,2 @@
 # タイプ変換を手動で指定する必要がある場合
-[typescript.type_mappings]
-"Ulid" = "string"
+# [typescript.type_mappings]
