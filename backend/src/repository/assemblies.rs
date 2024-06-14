@@ -125,6 +125,8 @@ struct Ac6AssemblyInsert {
 }
 
 impl Ac6AssemblyInsert {
+    // 引数が多すぎるとClippyに警告されるが，許容する
+    #[allow(clippy::too_many_arguments)]
     fn new(
         pilot_name: String,
         ac_name: String,
@@ -246,7 +248,7 @@ impl Ac6AssembliesRepo {
                 $11, $12, $13, $14, $15, $16, $17, $18, $19, $20
             )
             RETURNING id
-            "#
+            "#,
         )
         .bind(asm.pilot_name)
         .bind(asm.ac_name)
@@ -275,7 +277,7 @@ impl Ac6AssembliesRepo {
     }
 
     pub async fn read(&self, id: i32) -> Result<AcAssemble> {
-        let asm: Ac6AssemblyRead  = sqlx::query_as(
+        let asm: Ac6AssemblyRead = sqlx::query_as(
             r#"
             SELECT
                 id,
@@ -301,7 +303,7 @@ impl Ac6AssembliesRepo {
                 user_id
             FROM ac6_assemblies
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(id)
         .fetch_one(&self.db)
@@ -339,13 +341,13 @@ impl Ac6AssembliesRepo {
             WHERE id >= $1
             ORDER BY id DESC
             LIMIT $2
-            "#
+            "#,
         )
         .bind(prev_id)
         .bind(limit_size)
         .fetch_all(&self.db)
         .await?;
-    
+
         Ok(asm.into_iter().map(|a| a.into()).collect())
     }
 
@@ -421,21 +423,15 @@ impl Ac6AssembliesRepo {
 
 #[cfg(test)]
 mod tests {
+    use crate::repository::test_utils::setup_postgres_testcontainer;
+
     use super::*;
-    use dotenvy::dotenv;
     use share::model::assemble_core::AcAssembleNonId;
-    use sqlx::postgres::PgPoolOptions;
-    use std::env;
 
     #[tokio::test]
     /// テストデータを挿入する
     async fn test_create() {
-        dotenv().ok();
-
-        let db = PgPoolOptions::new()
-            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-            .await
-            .unwrap();
+        let (_container, db) = setup_postgres_testcontainer().await;
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
@@ -475,12 +471,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_read() {
-        dotenv().ok();
-
-        let db = PgPoolOptions::new()
-            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-            .await
-            .unwrap();
+        let (_container, db) = setup_postgres_testcontainer().await;
 
         let create_asm = AcAssembleNonId {
             user_id: 1,
@@ -524,12 +515,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_read_list() {
-        dotenv().ok();
-
-        let db = PgPoolOptions::new()
-            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-            .await
-            .unwrap();
+        let (_container, db) = setup_postgres_testcontainer().await;
         let create_asm = AcAssembleNonId {
             user_id: 1,
             pilot_name: "test pilot".to_owned(),
@@ -588,12 +574,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_update() {
-        dotenv().ok();
-
-        let db = PgPoolOptions::new()
-            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-            .await
-            .unwrap();
+        let (_container, db) = setup_postgres_testcontainer().await;
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {
@@ -669,12 +650,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_delete() {
-        dotenv().ok();
-
-        let db = PgPoolOptions::new()
-            .connect(&env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
-            .await
-            .unwrap();
+        let (_container, db) = setup_postgres_testcontainer().await;
         let repo = Ac6AssembliesRepo::new(db);
 
         let asm = AcAssembleNonId {

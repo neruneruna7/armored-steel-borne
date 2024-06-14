@@ -35,3 +35,7 @@ dotenvy = "*"
 # openapi関連
 utoipa = {workspace = true, features = ["axum_extras"]}
 utoipa-swagger-ui = {workspace = true, features = ["axum"]}
+
+# テストをしやすくする
+testcontainers = {version = "0.17.0", features = []}
+testcontainers-modules = {version = "0.5.0", features = ["postgres"]}
